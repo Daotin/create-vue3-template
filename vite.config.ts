@@ -8,11 +8,11 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-// 解决ElementPlus非标签元素丢失样式的问题
 import ElementPlus from "unplugin-element-plus/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  console.log("⭐mode==>", mode);
   return {
     plugins: [
       vue(),
@@ -30,12 +30,16 @@ export default defineConfig(({ mode }) => {
         transform(code, id) {
           if (mode === "development" && /src\/main.ts$/.test(id)) {
             return {
-              code: `${code};import ElementPlus from 'element-plus';import 'element-plus/dist/index.css';app.use(ElementPlus);`,
+              code: code.replace(
+                `app.mount("#app")`,
+                `import ElementPlus from 'element-plus';import 'element-plus/dist/index.css';app.use(ElementPlus);app.mount("#app")`
+              ),
               map: null,
             };
           }
         },
       },
+      // 解决ElementPlus非标签元素丢失样式的问题
       ElementPlus(),
     ],
     resolve: {
