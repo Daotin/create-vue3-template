@@ -28,3 +28,4 @@ coverage
 *.sw?
 package-lock.json
 yarn.lock
+auto-imports.d.ts
