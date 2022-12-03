@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import img404 from "@/assets/images/common/404.svg";
+import img404 from "@/assets/icons/common/404.svg";
 </script>
 
 <template>
   <div class="not-found">
     <div>
-      <img :src="img404" alt="" />
+      <el-image :src="img404" alt="" />
       <div class="f20 mt-5">页面丢失了哟</div>
     </div>
   </div>
@@ -17,6 +17,8 @@ import img404 from "@/assets/images/common/404.svg";
   background-color: #fff;
   text-align: center;
 
-  .flex-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
