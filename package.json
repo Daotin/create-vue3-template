@@ -12,6 +12,7 @@
     "changelog": "conventional-changelog -p custom-config -i CHANGELOG.md -s -r 0  -n ./changelog.config.js"
   },
   "dependencies": {
+    "axios": "^1.2.0",
     "element-plus": "^2.2.26",
     "pinia": "^2.0.26",
     "vue": "^3.2.45",
@@ -20,7 +21,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.11.10",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitejs/plugin-vue-jsx": "^2.1.1",
     "@vue/tsconfig": "^0.1.3",
