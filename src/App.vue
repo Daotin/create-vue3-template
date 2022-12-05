@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 
+import { useAppStore } from "@/stores";
+
+const appStore = useAppStore();
+
 const radio1 = ref("1");
 </script>
 
@@ -26,12 +30,17 @@ const radio1 = ref("1");
       <span class="mr-5">111</span>
       <span class="flex">222</span>
 
-      <el-button type="primary">按钮</el-button>
-
       <el-radio-group v-model="radio1" class="ml-4">
         <el-radio label="1" size="large">Option 1</el-radio>
         <el-radio label="2" size="large">Option 2</el-radio>
       </el-radio-group>
+
+      <hr />
+
+      <div>
+        <span>app-count: {{ appStore.count }}</span>
+        <el-button type="primary" @click="appStore.increment()">+1</el-button>
+      </div>
     </div>
   </header>
 
