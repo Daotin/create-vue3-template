@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
 
 const radio1 = ref("1");
 </script>
@@ -17,12 +16,12 @@ const radio1 = ref("1");
     />
 
     <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+
+      <hr />
 
       <span class="mr-5">111</span>
       <span class="flex">222</span>
