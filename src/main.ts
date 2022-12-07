@@ -1,11 +1,14 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+
+import message from '@/utils/message'
 
 import App from './App.vue'
 import router from './router'
 import pinia from './stores'
 
 import './assets/main.less'
+
+window.$message = message
 
 const app = createApp(App)
 app.use(router)
