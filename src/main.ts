@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from './router'
 import pinia from './stores'
 
-import './assets/main.less'
+import './assets/styles/main.less'
 // import './mocks'
 
 window.$message = message
