@@ -46,6 +46,16 @@ export default defineConfig(({ mode }) => {
 			// 解决ElementPlus非标签元素丢失样式的问题
 			ElementPlus(),
 		],
+		// 设置全局可以使用的less文件
+		css: {
+			preprocessorOptions: {
+				less: {
+					javascriptEnabled: true,
+					modifyVars: {},
+					additionalData: `@import "src/assets/styles/variable.less";`,
+				},
+			},
+		},
 		resolve: {
 			alias: {
 				// fileURLToPath:函数确保百分比编码字符的正确解码，并确保跨平台的有效绝对路径字符串。
