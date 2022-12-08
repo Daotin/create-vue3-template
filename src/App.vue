@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import IconLogo from '@/assets/icons/common/logo'
 
 import { useAppStore } from '@/stores'
 
@@ -33,6 +34,16 @@ const radio1 = ref('1')
 				<span class="count">app-count: {{ appStore.count }}</span>
 				<el-button type="primary" @click="appStore.increment()">+1</el-button>
 			</div>
+
+			<hr />
+
+			1111
+
+			<icon-logo></icon-logo>
+
+			<!-- <BaseIcon color="#000" :size="22">
+				<IconCustomCommonLogo />
+			</BaseIcon> -->
 		</div>
 	</header>
 

@@ -10,6 +10,14 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
 
+// svg按需加载
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+import { FileSystemIconLoader } from 'unplugin-icons/loaders'
+
+const path = require('path')
+const resolve = (dir: string) => path.resolve(process.cwd(), dir)
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
 	console.log('⭐mode==>', mode)
@@ -20,9 +28,24 @@ export default defineConfig(({ mode }) => {
 			AutoImport({
 				resolvers: [ElementPlusResolver()],
 			}),
+			Icons({
+				compiler: 'vue3', // vue2, vue3, jsx
+				customCollections: {
+					custom: FileSystemIconLoader(resolve('./src/assets/icons')),
+				},
+			}),
 			Components({
-				// 生产环境按需导入
-				resolvers: mode !== 'development' ? ElementPlusResolver() : undefined,
+				// 生成components.d.ts 文件，除了公共组件，自动导入的svg也会放入其中
+				dts: true,
+				resolvers: [
+					// 生产环境按需导入
+					ElementPlusResolver(),
+					// svg自动加载
+					IconsResolver({
+						prefix: 'icon',
+						customCollections: ['custom'], // 自动加载名称为"custom"的svg（custom是在Icons配置中自定义的）
+					}),
+				],
 			}),
 			// 开发环境完整引入element-plus
 			{
