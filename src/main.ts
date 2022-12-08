@@ -7,6 +7,7 @@ import router from './router'
 import pinia from './stores'
 
 import './assets/main.less'
+// import './mocks'
 
 window.$message = message
 
