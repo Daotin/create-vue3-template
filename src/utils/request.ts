@@ -1,9 +1,6 @@
 import axios, { type AxiosRequestConfig, type AxiosInstance } from 'axios'
-import { baseURL } from '@/config/domain'
-import { TokenName } from '@/config/const'
-import { useAppStoreWithOut } from '@/stores'
-// import { usePermission } from '@/hooks'
-import router from '@/router'
+import { baseURL } from '@/configs/domain'
+import { TokenName } from '@/configs/const'
 import { localMng } from '@/utils/storage-mng'
 
 class Request {
@@ -46,7 +43,7 @@ class Request {
 				return config
 			},
 			err => {
-				// window.$message.error('请求失败')
+				window.$message.error('请求失败')
 				return Promise.reject(err)
 			}
 		)
@@ -61,18 +58,18 @@ class Request {
 					case 200:
 						return Promise.resolve(body || res.data)
 					case 401:
-						// window.$message.warning(message || '无权限')
-						const appStore = useAppStoreWithOut()
-						appStore.logout(false)
+						window.$message.warning(message || '无权限')
 						return Promise.reject(res.data)
 					default:
-						// window.$message.error(message || '响应失败')
+						window.$message.error(message || '响应失败')
 						return Promise.reject(res.data)
 				}
 			},
 			err => {
-				if (!axios.isCancel(err)) {
-					// window.$message.error('响应失败')
+				if (axios.isCancel(err)) {
+					window.$message.error('响应取消')
+				} else {
+					window.$message.error('响应失败')
 				}
 				return Promise.reject(err)
 			}
