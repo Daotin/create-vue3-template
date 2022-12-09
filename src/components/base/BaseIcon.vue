@@ -1,65 +1,65 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { CSSProperties } from 'vue'
 
 interface IProps {
+	// 图标名称，就是svg文件的名称
+	name?: string
+	// 样式
+	iconClass?: string
 	// 图标大小
 	size?: string | number
 	//  图标颜色
 	color?: string
-	// 是否旋转
-	spin?: boolean
-	// 线条的粗细(1.先去掉svg图标代码中自身固定的strokeWidth，2.设置之后需要重启项目才有效果)
+	// 线条的粗细
 	strokeWidth?: string | number
-	// 旋转角度
-	rotate?: number
+	// 颜色样式（如果传了color，以color为准）
+	colorStyle?: 'blue' | 'green' | 'orange' | 'red' | 'gray'
 }
 
 const props = withDefaults(defineProps<IProps>(), {
 	size: 14,
-	strokeWidth: 4,
+	strokeWidth: 3,
 })
 
-const iconStyle = computed<CSSProperties>(() => ({
+// 图标名称
+const iconName = computed(() => '#icon-' + props.name)
+
+//  图标样式
+const iconStyle = computed(() => ({
 	fontSize: typeof props.size === 'string' ? props.size : `${props.size}px`,
 	color: props.color,
-	strokeWidth: props.strokeWidth,
-	transform: `rotateZ(${props.rotate}deg)`,
 }))
 </script>
 
 <template>
-	<i class="base-icon" :class="{ spin }" :style="iconStyle">
-		<slot></slot>
-	</i>
+	<svg class="base-icon" :class="[iconClass, colorStyle]" :style="iconStyle" aria-hidden="true">
+		<use :xlink:href="iconName" :stroke-width="strokeWidth"></use>
+	</svg>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 .base-icon {
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	height: 1em;
+	display: inline-block;
 	width: 1em;
+	height: 1em;
+	vertical-align: middle;
+	overflow: hidden;
 	fill: currentColor;
 	stroke: currentColor;
-
-	&.spin {
-		animation: spinning 2s cubic-bezier(0, 0, 1, 1) infinite;
+	&.blue {
+		color: @blue;
 	}
-
-	svg {
-		height: 1em;
-		width: 1em;
+	&.red {
+		color: @red;
 	}
-}
-
-@keyframes spinning {
-	0% {
-		transform: rotateZ(0deg);
+	&.green {
+		color: @green;
 	}
-	100% {
-		transform: rotateZ(360deg);
+	&.orange {
+		color: @orange;
+	}
+	&.gray {
+		color: @gray;
 	}
 }
 </style>

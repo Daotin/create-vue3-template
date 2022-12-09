@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import IconLogo from '@/assets/icons/common/logo'
 
 import { useAppStore } from '@/stores'
 
@@ -39,7 +38,7 @@ const radio1 = ref('1')
 
 			1111
 
-			<icon-logo></icon-logo>
+			<BaseIcon name="logo" :size="100" />
 
 			<!-- <BaseIcon color="#000" :size="22">
 				<IconCustomCommonLogo />

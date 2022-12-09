@@ -7,6 +7,8 @@ import router from './router'
 import pinia from './stores'
 
 import './assets/styles/main.less'
+
+import 'virtual:svg-icons-register'
 // import './mocks'
 
 window.$message = message

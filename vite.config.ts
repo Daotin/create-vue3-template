@@ -10,10 +10,8 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
 
-// svg按需加载
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import { FileSystemIconLoader } from 'unplugin-icons/loaders'
+// 生产svg精灵图
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 const path = require('path')
 const resolve = (dir: string) => path.resolve(process.cwd(), dir)
@@ -28,23 +26,12 @@ export default defineConfig(({ mode }) => {
 			AutoImport({
 				resolvers: [ElementPlusResolver()],
 			}),
-			Icons({
-				compiler: 'vue3', // vue2, vue3, jsx
-				customCollections: {
-					custom: FileSystemIconLoader(resolve('./src/assets/icons')),
-				},
-			}),
 			Components({
-				// 生成components.d.ts 文件，除了公共组件，自动导入的svg也会放入其中
+				// 生成components.d.ts 文件
 				dts: true,
 				resolvers: [
 					// 生产环境按需导入
 					ElementPlusResolver(),
-					// svg自动加载
-					IconsResolver({
-						prefix: 'icon',
-						customCollections: ['custom'], // 自动加载名称为"custom"的svg（custom是在Icons配置中自定义的）
-					}),
 				],
 			}),
 			// 开发环境完整引入element-plus
@@ -68,6 +55,12 @@ export default defineConfig(({ mode }) => {
 			},
 			// 解决ElementPlus非标签元素丢失样式的问题
 			ElementPlus(),
+			// 生产svg精灵图
+			createSvgIconsPlugin({
+				// 配置路劲在你的src里的svg存放文件
+				iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+				symbolId: 'icon-[dir]-[name]',
+			}),
 		],
 		// 设置全局可以使用的less文件
 		css: {
