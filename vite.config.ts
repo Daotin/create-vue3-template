@@ -14,6 +14,16 @@ import ElementPlus from 'unplugin-element-plus/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 const path = require('path')
+/**
+ * path.resolve：解析一系列的路径成绝对路径
+ * 示例：从 右向左 依次拼接。直到遇到第一个绝对路径形式的 path 才停止. 比如 path.resolve('/foo', '/bar', 'baz').
+ * 从右向左一次解析，第一次遇到的绝对路径为 '/bar' ，所以不再继续向左拼接，及最终结果为 '/bar' + '/' + 'baz' = '/bar/baz'
+ * @param dir
+ * @returns
+ * 问题：process.cwd() vs __dirname
+ * process.cwd() 返回调用node命令的目录。__dirname 返回当前运行文件所在的目录。
+ * 参考文档：https://stackoverflow.com/questions/9874382/whats-the-difference-between-process-cwd-vs-dirname
+ */
 const resolve = (dir: string) => path.resolve(process.cwd(), dir)
 
 // https://vitejs.dev/config/
@@ -77,6 +87,7 @@ export default defineConfig(({ mode }) => {
 				// fileURLToPath:函数确保百分比编码字符的正确解码，并确保跨平台的有效绝对路径字符串。
 				// URL:如果url参数是相对 URL，则构造函数将使用url参数和可选的base参数作为基础
 				'@': fileURLToPath(new URL('./src', import.meta.url)),
+				// '@': resolve('./src'),
 			},
 		},
 	}
