@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => {
 			vue(),
 			vueJsx(),
 			AutoImport({
+				imports: ['vue'], // 自动导入vue3 API
 				resolvers: [ElementPlusResolver()],
 			}),
 			Components({

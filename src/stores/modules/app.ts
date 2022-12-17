@@ -5,6 +5,7 @@ import store from '@/stores'
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		count: 0,
+		isCollapse: false, // 是否收起菜单
 	}),
 	getters: {
 		doubleCount: state => state.count * 2,

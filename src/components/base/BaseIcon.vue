@@ -46,6 +46,7 @@ const iconStyle = computed(() => ({
 	overflow: hidden;
 	fill: currentColor;
 	stroke: currentColor;
+	outline-style: none;
 	&.blue {
 		color: @blue;
 	}
