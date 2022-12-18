@@ -5,38 +5,7 @@ import { useRoute } from 'vue-router'
 const appStore = useAppStore()
 const isCollapse = computed(() => appStore.isCollapse)
 const route = useRoute()
-const menuList = [
-	{
-		id: '1',
-		name: 'Home',
-		icon: 'avatar',
-		url: '/home',
-	},
-	{
-		id: '2',
-		name: 'About',
-		icon: 'avatar',
-		url: '/about',
-	},
-	{
-		id: '3',
-		name: '菜单一',
-		icon: 'avatar',
-		url: '',
-		children: [
-			{
-				id: '3-1',
-				name: '菜单一-1',
-				url: '/',
-			},
-			{
-				id: '3-2',
-				name: '菜单一-2',
-				url: '',
-			},
-		],
-	},
-]
+const menuList = computed(() => appStore.menuList)
 
 const activeMenu = computed(() => {
 	const { meta, path } = route

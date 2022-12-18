@@ -6,8 +6,8 @@ import LoginBg from '@/assets/images/login/login-bg.jpg'
 const appStore = useAppStore()
 
 const formData = reactive({
-	name: '',
-	pwd: '',
+	name: 'daotin',
+	pwd: '123',
 })
 
 const rules = reactive<FormRules>({

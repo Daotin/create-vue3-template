@@ -13,6 +13,8 @@ export const useAppStore = defineStore('app', {
 		count: 0,
 		isCollapse: false, // 是否收起菜单
 		token: '',
+		userInfo: {}, // 用户信息
+		menuList: [], // 菜单列表
 	}),
 	getters: {
 		doubleCount: state => state.count * 2,
@@ -25,15 +27,43 @@ export const useAppStore = defineStore('app', {
 		randomizeCount() {
 			this.count = Math.round(100 * Math.random())
 		},
+		async getUserInfo() {
+			try {
+				const body = await window.$apis.common.apiGetUserInfo()
+				this.userInfo = body || {}
+			} catch (error) {
+				console.error(error)
+			} finally {
+			}
+		},
+		async getMenuList() {
+			try {
+				const body = await window.$apis.common.apiGetMenuList()
+				this.menuList = body || []
+			} catch (error) {
+				console.error(error)
+			} finally {
+			}
+		},
 		async login(data: any) {
-			const { token = '' } = await window.$apis.login.login(data)
-			this.token = token
-			localMng.setItem(TokenName, token)
+			const { token } = await window.$apis.login.login(data)
+			this.token = token || ''
+			localMng.setItem(TokenName, this.token)
 			request.setHeader({
 				Authorization: this.token,
 			})
-			// await this.getUserInfo()
+			await this.getUserInfo()
 			router.push('/')
+		},
+		async logout() {
+			await window.$apis.login.logout()
+			router.replace('/login')
+			localMng.removeItem(TokenName)
+			request.setHeader({
+				Authorization: '',
+			})
+			// 还原store
+			this.$reset()
 		},
 	},
 })

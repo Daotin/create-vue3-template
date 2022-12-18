@@ -4,8 +4,16 @@ import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores'
 const appStore = useAppStore()
 
+const userName = computed(() => appStore.userInfo?.userName || '')
+
 function handleCollapse() {
 	appStore.isCollapse = !appStore.isCollapse
+}
+async function handleLogout() {
+	try {
+		await window.$message.confirm('确认退出登录？')
+		appStore.logout()
+	} catch (error) {}
 }
 onMounted(() => {})
 </script>
@@ -24,9 +32,9 @@ onMounted(() => {})
 		<div class="user-info">
 			<span class="mr-3">
 				<BaseIcon name="avatar" :size="16" />
-				<span class="align-middle ml-2">Daotin</span>
+				<span class="align-middle ml-2">{{ userName }}</span>
 			</span>
-			<BaseIconTip name="exit" :size="18" tip="退出" class="cursor-pointer" />
+			<BaseIconTip name="exit" :size="18" tip="退出" class="cursor-pointer" @click="handleLogout" />
 		</div>
 	</div>
 </template>

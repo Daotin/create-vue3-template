@@ -11,9 +11,9 @@ export const basicSuccess = () => {
 const getUserInfo = () => {
 	return Mock.mock({
 		code: 200,
+		message: '操作成功',
 		body: {
-			id: 1,
-			userName: '@email',
+			userName: '@cname',
 			email: '@email',
 			mobile: /^1[345789]\d{9}$/,
 			avatar: '',
@@ -21,6 +21,44 @@ const getUserInfo = () => {
 		},
 	})
 }
-
+const mockGetMenuList = () => {
+	return Mock.mock({
+		code: 200,
+		message: '操作成功',
+		body: [
+			{
+				id: '1',
+				name: 'Home',
+				icon: 'avatar',
+				url: '/home',
+			},
+			{
+				id: '2',
+				name: 'About1',
+				icon: 'avatar',
+				url: '/about',
+			},
+			{
+				id: '3',
+				name: '菜单一',
+				icon: 'avatar',
+				url: '',
+				children: [
+					{
+						id: '3-1',
+						name: '菜单一-1',
+						url: '/',
+					},
+					{
+						id: '3-2',
+						name: '菜单一-2',
+						url: '',
+					},
+				],
+			},
+		],
+	})
+}
 // 拦截 Ajax 请求，返回模拟的响应数据。
-Mock.mock(/\/sys\/users\/info/, 'post', getUserInfo)
+Mock.mock(/\/sys\/user\/info/, 'post', getUserInfo)
+Mock.mock(/\/sys\/menus/, 'post', mockGetMenuList)

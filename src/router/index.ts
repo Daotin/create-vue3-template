@@ -64,7 +64,8 @@ router.beforeEach(async to => {
 		}
 	} else {
 		// 从后端获取菜单（保证菜单是最新的，因为有可能管理员会修改菜单权限）
-		// appStore.getMenuList();
+		appStore.getUserInfo()
+		appStore.getMenuList()
 	}
 })
 
