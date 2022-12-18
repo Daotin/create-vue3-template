@@ -4,16 +4,8 @@ import Mock from 'mockjs'
 export const basicSuccess = () => {
 	return {
 		code: 200,
+		message: '操作成功',
 	}
-}
-
-const login = () => {
-	return Mock.mock({
-		code: 200,
-		body: {
-			Authorization: '@title',
-		},
-	})
 }
 
 const getUserInfo = () => {
@@ -30,13 +22,5 @@ const getUserInfo = () => {
 	})
 }
 
-const logout = () => {
-	return {
-		code: 200,
-	}
-}
-
 // 拦截 Ajax 请求，返回模拟的响应数据。
 Mock.mock(/\/sys\/users\/info/, 'post', getUserInfo)
-Mock.mock(/\/sys\/login/, 'post', login)
-Mock.mock(/\/sys\/logout/, 'post', logout)

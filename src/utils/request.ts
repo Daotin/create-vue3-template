@@ -40,6 +40,7 @@ class Request {
 					//   router.push('/error/forbidden')
 					// }
 				})
+				console.log('⬆️请求地址==>', config.url)
 				return config
 			},
 			err => {
@@ -56,6 +57,7 @@ class Request {
 				const { code = 200, body, message } = res.data
 				switch (code) {
 					case 200:
+						console.log('⬇️返回结果==>', res.data)
 						return Promise.resolve(body || res.data)
 					case 401:
 						window.$message.warning(message || '无权限')

@@ -3,19 +3,18 @@
  * 使用本地存储的时候推荐统一采用该方式，同时在这里记录每个key和它的作用。
  */
 
-import { tupleStr } from '@/utils/type'
-import { TokenName } from '@/config/const'
+import { TokenName } from '@/configs/const'
 
 // 项目中所有存储在localStorage中的数据
-const localKeys = tupleStr(
+const localKeys = [
 	// 是否折叠侧边菜单 true：折叠
 	'sideCollapse',
 	// token
-	TokenName
-)
+	TokenName,
+]
 
 // 项目中所有存在sessionStorage中的数据的名称
-const sessionKeys = tupleStr()
+const sessionKeys = <string[]>[]
 
 type localKeyName = typeof localKeys[number]
 type sessionKeyName = typeof sessionKeys[number]

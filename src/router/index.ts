@@ -1,13 +1,16 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
 import commonRoute from './modules/common'
+import { localMng } from '@/utils/storage-mng'
+import { TokenName } from '@/configs/const'
+import { useAppStoreWithOut } from '@/stores'
 
 // 不需要鉴权的外部界面
 const outerPaths: RouteRecordRaw[] = [
-	// {
-	//   path: "/",
-	//   redirect: "/login",
-	// },
+	{
+		path: '/',
+		redirect: '/home',
+	},
 	{
 		name: 'login',
 		path: '/login',
@@ -49,18 +52,20 @@ router.beforeEach(async to => {
 	if (title) {
 		document.title = title
 	}
-	// const appStore = useAppStoreWithOut();
+	const appStore = useAppStoreWithOut()
 
-	// const token = localMng.getItem(TokenName);
-	// console.log(token, to.path);
-	// if (!token) {
-	//   if (to.path !== "/login") {
-	//     return "/login";
-	//   }
-	// } else {
-	//   // 从后端获取菜单（保证菜单是最新的，因为有可能管理员会修改菜单权限）
-	//   appStore.getMenuList();
-	// }
+	const token = localMng.getItem(TokenName)
+	console.log(token, to.path)
+
+	if (!token) {
+		if (to.path !== '/login') {
+			window.$message.warning('登录已超时')
+			return '/login'
+		}
+	} else {
+		// 从后端获取菜单（保证菜单是最新的，因为有可能管理员会修改菜单权限）
+		// appStore.getMenuList();
+	}
 })
 
 export default router

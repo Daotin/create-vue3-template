@@ -1,5 +1,16 @@
 /*通用样式*/
 
+// 颜色类
+.black3 {
+	color: @black3;
+}
+.black6 {
+	color: @black6;
+}
+.black9 {
+	color: @black9;
+}
+
 // 字体大小 fs12 --> fs48
 .font(@i) when(@i <= 48) {
 	.f@{i} {
@@ -9,3 +20,8 @@
 }
 
 .font(12);
+
+// 圆角 radius
+.radius {
+	border-radius: 4px;
+}
