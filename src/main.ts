@@ -15,9 +15,7 @@ import 'virtual:svg-icons-register'
 
 window.$message = message
 window.$apis = apis
-
 const app = createApp(App)
 app.use(router)
 app.use(pinia)
-
 app.mount('#app')

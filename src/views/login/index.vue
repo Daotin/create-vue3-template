@@ -22,7 +22,7 @@ async function handleLogin() {
 		await formRef.value.validate()
 		submitLoading.value = true
 		await appStore.login(formData)
-
+		window.$message.success('登录成功')
 		// localMng.setItem(TokenName, Authorization)
 
 		// await appStore.getUserInfo(true)
@@ -65,6 +65,7 @@ async function handleLogin() {
 <style lang="less" scoped>
 .login-wrap {
 	background: url('@/assets/images/login/login-bg.jpg') center center no-repeat;
+	background-size: cover;
 	.login-content {
 		width: 500px;
 		margin: 0 auto;
