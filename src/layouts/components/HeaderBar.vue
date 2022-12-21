@@ -6,6 +6,8 @@ const appStore = useAppStore()
 
 const userName = computed(() => appStore.userInfo?.userName || '')
 
+const systemName = process.env.VITE_SYSTEM_NAME || "Daotin2's System"
+
 function handleCollapse() {
 	appStore.isCollapse = !appStore.isCollapse
 }
@@ -21,7 +23,7 @@ onMounted(() => {})
 	<div class="layouts-header-box flex items-center justify-between px-5">
 		<div class="logo-box">
 			<BaseIcon name="logo" :size="28" />
-			<span class="font-bold f20 mx-3">Daotin's System</span>
+			<span class="font-bold f20 mx-3">{{ systemName }}</span>
 			<BaseIcon
 				:name="appStore.isCollapse ? 'menu-unfold' : 'menu-fold'"
 				:size="24"
