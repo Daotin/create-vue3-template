@@ -1,4 +1,4 @@
-import axios, { type AxiosRequestConfig, type AxiosInstance } from 'axios'
+import axios, { type AxiosRequestConfig, type AxiosInstance, type AxiosResponse } from 'axios'
 import { baseURL } from '@/configs/domain'
 import { TokenName } from '@/configs/const'
 import { localMng } from '@/utils/storage-mng'
@@ -32,7 +32,7 @@ class Request {
 	// 请求拦截器
 	private setReqInterceptors = () => {
 		this.instance.interceptors.request.use(
-			config => {
+			(config: AxiosRequestConfig) => {
 				// const { checkApiPermission } = usePermission()
 				config.cancelToken = new axios.CancelToken(function executor(c) {
 					// if (!checkApiPermission(config.url)) {
@@ -53,7 +53,7 @@ class Request {
 	// 响应拦截器
 	private setResInterceptors = () => {
 		this.instance.interceptors.response.use(
-			res => {
+			(res: AxiosResponse) => {
 				const { code = 200, body, message } = res.data
 				switch (code) {
 					case 200:
