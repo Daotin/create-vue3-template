@@ -8,7 +8,7 @@ import pinia from './stores'
 
 import apis from '@/apis'
 import { getImageSrc } from '@/utils/cdn'
-import _ from 'loadsh-es'
+import _ from 'lodash-es'
 
 import './assets/styles/main.less'
 
