@@ -10,8 +10,8 @@ const menuList = computed(() => appStore.menuList)
 const activeMenu = computed(() => {
 	const { meta, path } = route
 	console.log('⭐meta==>', meta)
-	const activePath = meta.activePath as string
-	return activePath || path
+	const parentPath = meta.parentPath as string
+	return parentPath || path
 })
 
 function handleOpen() {}

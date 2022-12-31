@@ -7,6 +7,8 @@ import router from './router'
 import pinia from './stores'
 
 import apis from '@/apis'
+import { getImageSrc } from '@/utils/cdn'
+import _ from 'loadsh'
 
 import './assets/styles/main.less'
 
@@ -15,6 +17,9 @@ import 'virtual:svg-icons-register'
 
 window.$message = message
 window.$apis = apis
+window.$getImageSrc = getImageSrc
+window.$_ = _
+
 const app = createApp(App)
 app.use(router)
 app.use(pinia)
