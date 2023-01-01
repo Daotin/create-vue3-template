@@ -15,6 +15,7 @@ export const useAppStore = defineStore('app', {
 		token: '',
 		userInfo: {}, // 用户信息
 		menuList: [], // 菜单列表
+		permissions: ['home:button'] as string[], // 权限列表
 	}),
 	getters: {
 		doubleCount: state => state.count * 2,
