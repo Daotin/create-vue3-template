@@ -19,6 +19,14 @@ const outerPaths: RouteRecordRaw[] = [
 			title: '登录',
 		},
 	},
+	{
+		name: 'icons',
+		path: '/icons',
+		component: () => import('@/components/business/iconPreview.vue'),
+		meta: {
+			title: 'icon预览',
+		},
+	},
 ]
 
 // 需要鉴权的界面
@@ -26,7 +34,6 @@ const innerPaths: RouteRecordRaw[] = [
 	{
 		name: 'Portal',
 		path: '/portal',
-		// redirect: "/welcome",
 		component: () => import('@/layouts/index.vue'),
 		children: [...commonRoute],
 	},
@@ -48,11 +55,16 @@ const router = createRouter({
 
 // 全局路由守卫
 router.beforeEach(async to => {
+	const appStore = useAppStoreWithOut()
 	const title = (to.meta && (to.meta.title as string)) || ''
 	if (title) {
 		document.title = title
 	}
-	const appStore = useAppStoreWithOut()
+	// 外部界面，直接访问
+	const outerPathNames = outerPaths.map(item => item.path)
+	if (outerPathNames.includes(to.path)) {
+		return true
+	}
 
 	const token = localMng.getItem(TokenName)
 	console.log(token, to.path)
