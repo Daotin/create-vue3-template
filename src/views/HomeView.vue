@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import enums from '@/enums'
+
+console.log('⭐==>', enums.common.enumState.enabled)
+</script>
 
 <template>
 	<main>Home</main>
