@@ -10,10 +10,12 @@ import apis from '@/apis'
 import { getImageSrc } from '@/utils/cdn'
 import _ from 'lodash-es'
 import directives from './directives'
-import './assets/styles/main.less'
 
 import 'virtual:svg-icons-register'
+import 'virtual:windi.css'
 // import './mocks'
+
+import './assets/styles/main.less'
 
 window.$message = message
 window.$apis = apis
