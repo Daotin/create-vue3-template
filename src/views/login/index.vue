@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { FormRules } from 'element-plus'
 import { useAppStore } from '@/stores'
-import LoginBg from '@/assets/images/login/login-bg.jpg'
+import LoginBg from '@/assets/images/login/login-bg.jpg?url'
+import { waitForImageLoad } from '@/utils'
 
 const appStore = useAppStore()
 
@@ -34,6 +35,18 @@ async function handleLogin() {
 		submitLoading.value = false
 	}
 }
+
+onMounted(async () => {
+	// 优化图片加载完成后再替换首页图片
+	try {
+		const dom = document.querySelector('.login-wrap') as HTMLElement
+		await waitForImageLoad(LoginBg)
+		dom!.style.backgroundImage = `url(${LoginBg})`
+	} catch (error) {
+		console.error(error)
+	} finally {
+	}
+})
 </script>
 <template>
 	<div class="login-wrap w-full h-full flex justify-center items-center">
@@ -64,7 +77,7 @@ async function handleLogin() {
 </template>
 <style lang="less" scoped>
 .login-wrap {
-	background: url('@/assets/images/login/login-bg.jpg') center center no-repeat;
+	background: url('@/assets/images/login/login-bg-placeholder.jpg') center center no-repeat;
 	background-size: cover;
 	.login-content {
 		width: 500px;
