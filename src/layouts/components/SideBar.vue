@@ -2,10 +2,12 @@
 import MenuItem from './MenuItem.vue'
 import { useAppStore } from '@/stores'
 import { useRoute } from 'vue-router'
+import type { IObject } from '@/models/common'
+
 const appStore = useAppStore()
 const isCollapse = computed(() => appStore.isCollapse)
 const route = useRoute()
-const menuList = computed(() => appStore.menuList)
+const menuList = computed<IObject[]>(() => appStore.menuList)
 
 const activeMenu = computed(() => {
 	const { meta, path } = route

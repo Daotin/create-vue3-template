@@ -5,6 +5,7 @@ import request from '@/utils/request'
 import store from '@/stores'
 import { useRouter } from 'vue-router'
 import router from '@/router'
+import type { IObject } from '@/models/common'
 
 // const router = useRouter() // TIPS: vue组件之外不能使用useRouter，需使用import router from '@/router'方式
 
@@ -13,7 +14,7 @@ export const useAppStore = defineStore('app', {
 		count: 0,
 		isCollapse: false, // 是否收起菜单
 		token: '',
-		userInfo: {}, // 用户信息
+		userInfo: {} as IObject, // 用户信息
 		menuList: [], // 菜单列表
 		permissions: ['home:button'] as string[], // 权限列表
 	}),

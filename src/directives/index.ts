@@ -1,7 +1,7 @@
-import type { App, Directive } from 'vue'
+import type { App } from 'vue'
 import auth from './modules/auth'
 
-const directives = { auth: auth }
+const directives = { auth } as any
 
 export default {
 	install(app: App) {
