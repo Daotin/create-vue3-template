@@ -2,7 +2,7 @@
 
 ## 功能 TODO
 
-<details open>
+<details>
 <summary>脚手架</summary>
 
 - [x] 开发工具推荐
@@ -70,7 +70,7 @@
 
 </details>
 
-<details open>
+<details>
 <summary>组件</summary>
 
 - [x] 基础 UI 组件 base
@@ -94,7 +94,7 @@
 
 </details>
 
-<details open>
+<details>
 <summary>业务模块</summary>
 
 > 参考其他组件库：https://vben.vvbin.cn/#/dashboard/analysis
@@ -113,11 +113,10 @@
 - [ ] 富文本编辑器
 - [ ] markdown 编辑器
 - [x] 项目用到的 svg 预览界面：`iconPreview.vue`
-- [ ]
 
 </details>
 
-<details open>
+<details>
 <summary>其他</summary>
 
 - [ ] WIKI 文档
@@ -126,7 +125,6 @@
     - [ ] use 函数库
   - [ ] UI 设计规范
   - [ ] Git 版本控制
-  - [ ]
 
 </details>
 
