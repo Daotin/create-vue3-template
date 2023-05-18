@@ -13,8 +13,6 @@ import ElementPlus from 'unplugin-element-plus/vite'
 // 生产svg精灵图
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
-import WindiCSS from 'vite-plugin-windicss'
-
 const path = require('path')
 /**
  * path.resolve：解析一系列的路径成绝对路径
@@ -76,7 +74,6 @@ export default defineConfig(({ mode }) => {
 				iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
 				symbolId: 'icon-[dir]-[name]',
 			}),
-			WindiCSS(),
 		],
 		// 设置全局可以使用的less文件
 		css: {

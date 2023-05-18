@@ -12,8 +12,6 @@ import _ from 'lodash-es'
 import directives from './directives'
 
 import 'virtual:svg-icons-register'
-import 'virtual:windi.css'
-// import './mocks'
 
 import './assets/styles/main.less'
 
