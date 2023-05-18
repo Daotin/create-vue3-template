@@ -1,4 +1,6 @@
-# 前端框架 Vite+Vue3
+# 前端框架模板 Vite+Vue3
+
+> 配套说明文档：https://daotin.github.io/fe-series-notes
 
 ## 功能 TODO
 
