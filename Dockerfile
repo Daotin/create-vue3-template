@@ -4,11 +4,14 @@ FROM node:16.18.1 AS builder
 # 将工作目录设置为 /app
 WORKDIR /app
 
-# 将整个应用程序复制到镜像中
-COPY . .
+# 将 package.json 和 package-lock.json 复制到镜像中
+COPY package*.json ./
 
 # 安装依赖
 RUN npm install
+
+# 将整个应用程序复制到镜像中
+COPY . .
 
 # 构建应用程序
 RUN npm run build-only
