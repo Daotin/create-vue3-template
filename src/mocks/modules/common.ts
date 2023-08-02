@@ -56,6 +56,12 @@ const mockGetMenuList = () => {
 					},
 				],
 			},
+			{
+				id: '4',
+				name: 'TySearchForm',
+				icon: 'avatar',
+				url: '/demo/form',
+			},
 		],
 	})
 }

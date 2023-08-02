@@ -41,6 +41,7 @@ const isCollapse = computed(() => appStore.isCollapse)
 		padding-bottom: 0;
 		background-color: @bgc;
 		.main-content {
+			padding: 20px;
 			background-color: #fff;
 			border-radius: 4px;
 		}

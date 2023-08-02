@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 
 import commonRoute from './modules/common'
+import daotinRoute from './modules/daotin'
 import { localMng } from '@/utils/storage-mng'
 import { TokenName } from '@/configs/const'
 import { useAppStoreWithOut } from '@/stores'
@@ -35,7 +36,7 @@ const innerPaths: RouteRecordRaw[] = [
 		name: 'Portal',
 		path: '/portal',
 		component: () => import('@/layouts/index.vue'),
-		children: [...commonRoute],
+		children: [...commonRoute, ...daotinRoute],
 	},
 ]
 
@@ -56,7 +57,7 @@ const router = createRouter({
 			el: '#app',
 			top: 0,
 			behavior: 'smooth',
-		};
+		}
 	},
 })
 
