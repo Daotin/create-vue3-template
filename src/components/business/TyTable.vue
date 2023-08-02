@@ -3,6 +3,9 @@ import { computed, onMounted, ref } from 'vue'
 import type { ITableConfig, IColumnConfig } from '@/models/table'
 import { isEmpty } from '@/utils'
 
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 interface IProps {
 	code?: string // TODO daotin 未使用的变量
 	data: Array<any>
@@ -110,7 +113,7 @@ const handleCurrentChange = (val: number) => {
 						<!-- BaseDot -->
 						<template v-else-if="item.formatter === 'dot'">
 							<BaseDot :type="item.enumModel!.getColor(scope.row[item.key])">{{
-								$t(`dic.${item.enumModelDic!}_${scope.row[item.key]}`)
+								t(`dic.${item.enumModelDic!}_${scope.row[item.key]}`)
 							}}</BaseDot>
 						</template>
 						<template v-else>{{ renderTableFiled(scope.row, item) }}</template>

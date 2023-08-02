@@ -193,8 +193,14 @@ async function handleDelete(row) {
 		console.error(error)
 	}
 }
-</script>
 
+/***********************************************************************
+ * 生命周期
+ ************************************************************************/
+onMounted(() => {
+	search.handleSearch()
+})
+</script>
 <template>
 	<div class="page-content xxx">
 		<div class="f20 font-bold mb-4">TySearchForm模板</div>
@@ -230,21 +236,6 @@ async function handleDelete(row) {
 					<template #default="scope">
 						{{ scope.row.device?.name || 0 }}
 						<!-- {{ t(`dic.enumLockStatus_${scope.row.lockStatus}`) }} -->
-					</template>
-				</el-table-column>
-			</template>
-			<template #table-deviceStatus>
-				<el-table-column
-					prop="deviceStatus"
-					label="设备状态"
-					:show-overflow-tooltip="tableConfig.isSingleLine"
-					min-width="120px"
-				>
-					<template #default="scope">
-						<BaseDot :type="enumDeviceStatus.getColor(scope.row.deviceStatus)">{{
-							// t(`dic.enumDeviceStatus_${scope.row.deviceStatus}`)
-							scope.row?.deviceStatus || 0
-						}}</BaseDot>
 					</template>
 				</el-table-column>
 			</template>
