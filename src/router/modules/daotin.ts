@@ -10,6 +10,15 @@ const routes: RouteRecordRaw[] = [
 			// keepAlive: true,
 		},
 	},
+	{
+		path: '/demo/upload',
+		name: 'demo/upload',
+		component: () => import('@/views/demo/upload/upload.vue'),
+		meta: {
+			title: '分片上传',
+			// keepAlive: true,
+		},
+	},
 	// {
 	// 	path: '/ra/detail/:id',
 	// 	name: 'ra/detail',

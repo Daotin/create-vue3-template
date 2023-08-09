@@ -7,7 +7,8 @@
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
 		"components.d.ts",
-		"auto-imports.d.ts"
+		"auto-imports.d.ts",
+		"public/hash.js"
 	],
 	"compilerOptions": {
 		"baseUrl": ".",

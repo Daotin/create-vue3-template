@@ -62,6 +62,12 @@ const mockGetMenuList = () => {
 				icon: 'avatar',
 				url: '/demo/form',
 			},
+			{
+				id: '5',
+				name: '分片上传',
+				icon: 'avatar',
+				url: '/demo/upload',
+			},
 		],
 	})
 }

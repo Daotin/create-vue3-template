@@ -116,3 +116,32 @@ export const enumMng = <T extends EnumModel>(data: Array<T>): EnumResult<T> => {
 
 	return result
 }
+
+/**
+ * 判断是否是某种类型
+ * @param  {[string]} fileName [文件名称]
+ * @return {[boolean]}         [返回值]
+ */
+export const isSetType = (fileName: string, type: string | Array<string>) => {
+	if (typeof fileName !== 'string') return false
+	let name = fileName.toLowerCase()
+	if (Array.isArray(type)) {
+		const isFilterArr = type.filter(item => {
+			return name.endsWith(item)
+		})
+		return isFilterArr.length > 0
+	} else {
+		return name.endsWith(type)
+	}
+}
+
+/**
+ * 校验文件名称长度
+ * @param file 文件
+ * @param length 比较的长度
+ * @returns 是否小于length长度，是则返回true，否则返回false
+ */
+export const checkFileNameLength = (file, length) => {
+	// console.log('⭐checkFileNameLength==>', file.name.split('.')[0] <= length)
+	return file.name.split('.')[0]?.length <= length
+}
