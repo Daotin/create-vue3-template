@@ -6,6 +6,7 @@ self.onmessage = function (e) {
   const hashes = [];
 
   let progress = 0;
+  // 获取每一块文件的hash
   for (const chunk of chunks) {
     const spark = new SparkMD5.ArrayBuffer();
     const reader = new FileReaderSync();
@@ -17,6 +18,7 @@ self.onmessage = function (e) {
     self.postMessage({ progress: (progress / chunks.length) * 100 });
   }
 
+  // 获取完整文件的hash
   const spark = new SparkMD5.ArrayBuffer();
   const reader = new FileReaderSync();
   const arrayBuffer = reader.readAsArrayBuffer(fileRaw);

@@ -64,26 +64,31 @@ const Concurrent = 3
 // 总切片
 const chunks = ref([])
 
-// 计算分片的hash
+// 计算分片的hash数组
 const chunkHashes = ref<string[]>([])
 
 // 总文件hash
 const fileHash = ref('')
 
-// 已上传的切片数
+// 已上传的切片数（最好使用后端数据）
 const hasUploadCount = ref(0)
 
 // 是否显示取消按钮
 const showCancel = ref(false)
 
-// 上传进度
+// 上传进度（最好使用后端数据）
 const progress = computed(() => {
 	if (!chunks.value.length) return 0
 	return parseInt((hasUploadCount.value / chunks.value.length) * 100 + '')
 })
 
+// 使用web worker计算文件hash
 const worker = new Worker('/hash.js')
 
+/**
+ * 接收到切片数组后，计算切片的hash值
+ * @param chunks 切片数组
+ */
 async function calculateHashes(chunks: any[]) {
 	return new Promise(resolve => {
 		worker.onmessage = function (e) {
@@ -98,7 +103,11 @@ async function calculateHashes(chunks: any[]) {
 	})
 }
 
-// 生成文件切片
+/**
+ * 生成切片，然后向worker发送切片进行计算
+ * @param file 文件对象
+ * @param chunkSize 切片大小
+ */
 function generateChunks(file: any, chunkSize: number) {
 	const chunks = []
 	let start = 0
@@ -114,7 +123,7 @@ function generateChunks(file: any, chunkSize: number) {
 }
 
 /**
-
+并发限制函数：
 假设你有9个请求在数组 `requests` 中，并且并发限制 `limit` 为3。那么我们期望在任何时刻，
 都最多有3个请求在同时进行，并且当其中的某个请求完成时，我们希望从队列中取出下一个请求来进行处理。
 下面是代码执行过程的分解：
@@ -160,7 +169,11 @@ async function handleRequests(requests: any[], limit: number) {
 	return results // 返回所有请求的结果
 }
 
-// 上传切片
+/**
+ * 上传切片
+ * @param chunks 切片数组
+ * @param chunkHashes 切片hash数组
+ */
 function uploadChunks(chunks: any, chunkHashes: any[]) {
 	console.log('⭐uploadChunks==>', chunks, chunkHashes)
 	const requests = generateRequests(chunks, chunkHashes)
@@ -168,7 +181,11 @@ function uploadChunks(chunks: any, chunkHashes: any[]) {
 	return handleRequests(requests, Concurrent)
 }
 
-// 生成上传请求，排除已完成的分片
+/**
+ * 将请求封装成请求数组，排除已完成的分片请求
+ * @param chunks 切片数组
+ * @param chunkHashes 切片hash数组
+ */
 function generateRequests(chunks: any, chunkHashes: any[]) {
 	abortController.value = new AbortController()
 	signal.value = abortController.value.signal
@@ -200,7 +217,7 @@ function generateRequests(chunks: any, chunkHashes: any[]) {
 	return requests
 }
 
-// 点击上传
+// 点击按钮上传
 async function handleSubmit(resume = false) {
 	try {
 		// 如果是恢复上传
@@ -229,7 +246,7 @@ function handleCancel() {
 	showCancel.value = false
 }
 
-// 清空上传进度
+// 清空上传分片缓存
 function clearUploadProgress() {
 	localStorage.removeItem('completedChunks')
 }
