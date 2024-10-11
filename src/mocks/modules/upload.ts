@@ -9,7 +9,7 @@ const mockUpload = () => {
 	})
 }
 
-Mock.mock(/demo\/uploadChunk/, 'post', mockUpload)
+Mock.mock(/daotin\/uploadChunk/, 'post', mockUpload)
 
 // tableCode的mock
 Mock.mock(/form\/config\/findOne/, 'post', basicSuccess)

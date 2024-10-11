@@ -213,7 +213,7 @@ onMounted(() => {
 			@reset-search="search.resetSearch"
 		>
 			<template #opt>
-				<el-button type="primary" @click="handleAdd">新增</el-button>
+				<!-- <el-button type="primary" @click="handleAdd">新增</el-button> -->
 			</template>
 		</TySearchForm>
 
