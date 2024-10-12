@@ -2,20 +2,29 @@ import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
 	{
-		path: '/demo/form',
-		name: 'demo/form',
-		component: () => import('@/views/demo/search-index.vue'),
+		path: '/daotin/form',
+		name: 'daotin/form',
+		component: () => import('@/views/daotin/search-index.vue'),
 		meta: {
 			title: '表单搜索',
 			// keepAlive: true,
 		},
 	},
 	{
-		path: '/demo/upload',
-		name: 'demo/upload',
-		component: () => import('@/views/demo/upload/upload.vue'),
+		path: '/daotin/upload',
+		name: 'daotin/upload',
+		component: () => import('@/views/daotin/upload/index.vue'),
 		meta: {
 			title: '分片上传',
+			// keepAlive: true,
+		},
+	},
+	{
+		path: '/daotin/echarts',
+		name: 'daotin/echarts',
+		component: () => import('@/views/daotin/echarts/index.vue'),
+		meta: {
+			title: 'echarts案例',
 			// keepAlive: true,
 		},
 	},

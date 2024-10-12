@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BaseDot: typeof import('./src/components/base/BaseDot.vue')['default']
+    BaseEcharts: typeof import('./src/components/business/base-echarts/BaseEcharts.vue')['default']
     BaseIcon: typeof import('./src/components/base/BaseIcon.vue')['default']
     BaseIconButton: typeof import('./src/components/base/BaseIconButton.vue')['default']
     BaseIconTip: typeof import('./src/components/base/BaseIconTip.vue')['default']

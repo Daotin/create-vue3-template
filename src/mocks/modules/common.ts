@@ -60,13 +60,19 @@ const mockGetMenuList = () => {
 				id: '4',
 				name: 'TySearchForm',
 				icon: 'avatar',
-				url: '/demo/form',
+				url: '/daotin/form',
 			},
 			{
 				id: '5',
 				name: '分片上传',
 				icon: 'avatar',
-				url: '/demo/upload',
+				url: '/daotin/upload',
+			},
+			{
+				id: '6',
+				name: 'echarts案例',
+				icon: 'avatar',
+				url: '/daotin/echarts',
 			},
 		],
 	})

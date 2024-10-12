@@ -9,6 +9,8 @@ import TyTable from '@/components/business/TyTable.vue'
 import type { ITableConfig } from '@/models/table'
 import { enumOptionType } from '@/configs/enum'
 
+import { options } from './options'
+
 /**********************************************************************************
  * props,emits相关
  *********************************************************************************/
@@ -29,10 +31,26 @@ defineExpose({
 </script>
 
 <template>
-	<div class="echarts-index">echarts-index</div>
+	<div class="echarts-index">
+		<div class="chart-item" v-for="option in options">
+			<BaseEcharts :options="option" />
+		</div>
+	</div>
 </template>
 
 <style lang="less" scoped>
 .echarts-index {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
+
+	.chart-item {
+		width: 100%;
+		height: 400px;
+		.base-echarts {
+			width: 100%;
+		}
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
 }
 </style>

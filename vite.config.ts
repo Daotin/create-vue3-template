@@ -41,11 +41,8 @@ export default defineConfig(({ mode }) => {
 			}),
 			Components({
 				// 生成components.d.ts 文件
-				dts: true,
-				resolvers: [
-					// 生产环境按需导入
-					ElementPlusResolver(),
-				],
+				// dts: true,
+				resolvers: mode !== 'development' ? ElementPlusResolver() : undefined,
 			}),
 			// 开发环境完整引入element-plus
 			{
