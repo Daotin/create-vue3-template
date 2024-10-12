@@ -6,11 +6,11 @@ const appStore = useAppStore()
 const isCollapse = computed(() => appStore.isCollapse)
 </script>
 <template>
-	<el-container class="layouts-wrap h-full flex flex-col">
+	<el-container class="layouts-wrap h-full flex flex-col overflow-hidden">
 		<el-header>
 			<HeaderBar />
 		</el-header>
-		<el-container>
+		<el-container class="overflow-hidden">
 			<el-aside :width="isCollapse ? '64px' : '200px'">
 				<SideBar />
 			</el-aside>
@@ -44,6 +44,8 @@ const isCollapse = computed(() => appStore.isCollapse)
 			padding: 20px;
 			background-color: #fff;
 			border-radius: 4px;
+			overflow: hidden;
+			overflow-y: auto;
 		}
 	}
 }

@@ -31,7 +31,7 @@ defineExpose({
 </script>
 
 <template>
-	<div class="echarts-index">
+	<div class="echarts-index h-full">
 		<div class="chart-item" v-for="option in options">
 			<BaseEcharts :options="option" />
 		</div>
