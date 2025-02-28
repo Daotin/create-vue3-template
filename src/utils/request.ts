@@ -1,7 +1,19 @@
-import axios, { type AxiosRequestConfig, type AxiosInstance, type AxiosResponse } from 'axios'
+import axios, {
+	type AxiosRequestConfig,
+	type InternalAxiosRequestConfig,
+	type AxiosInstance,
+	type AxiosResponse,
+} from 'axios'
 import { baseURL } from '@/configs/domain'
 import { TokenName } from '@/configs/const'
 import { localMng } from '@/utils/storage-mng'
+
+// 定义接口通用返回格式
+interface IBaseResponse {
+	code: number
+	body: any
+	message: string
+}
 
 class Request {
 	private baseConfig: AxiosRequestConfig = {
@@ -32,7 +44,7 @@ class Request {
 	// 请求拦截器
 	private setReqInterceptors = () => {
 		this.instance.interceptors.request.use(
-			(config: AxiosRequestConfig) => {
+			(config: InternalAxiosRequestConfig) => {
 				// const { checkApiPermission } = usePermission()
 				config.cancelToken = new axios.CancelToken(function executor(c) {
 					// if (!checkApiPermission(config.url)) {
@@ -53,6 +65,12 @@ class Request {
 	private setResInterceptors = () => {
 		this.instance.interceptors.response.use(
 			(res: AxiosResponse) => {
+				// 首先检查HTTP状态码
+				if (res.status !== 200) {
+					window.$message.error(`HTTP错误: ${res.status}`)
+					return Promise.reject(res)
+				}
+
 				const { code = 200, body, message } = res.data
 
 				console.groupCollapsed(`%c${res.config.url}`, 'color:green')
@@ -67,6 +85,7 @@ class Request {
 				console.log('res=>', body || res)
 				console.groupEnd()
 
+				// 然后检查业务状态码
 				switch (code) {
 					case 200:
 						return Promise.resolve(body || res.data)
@@ -79,10 +98,35 @@ class Request {
 				}
 			},
 			err => {
+				// 处理HTTP错误
 				if (axios.isCancel(err)) {
 					window.$message.error('响应取消')
+				} else if (err.response) {
+					// 服务器响应了，但状态码不在2xx范围内
+					const status = err.response.status
+					switch (status) {
+						case 401:
+							window.$message.error('未授权，请重新登录')
+							// 这里可以添加跳转到登录页的逻辑
+							break
+						case 403:
+							window.$message.error('拒绝访问')
+							break
+						case 404:
+							window.$message.error('请求的资源不存在')
+							break
+						case 500:
+							window.$message.error('服务器错误')
+							break
+						default:
+							window.$message.error(`请求错误: ${status}`)
+					}
+				} else if (err.request) {
+					// 请求已发出，但没有收到响应
+					window.$message.error('网络错误，服务器无响应')
 				} else {
-					window.$message.error('响应失败')
+					// 请求配置出错
+					window.$message.error('请求配置错误')
 				}
 				return Promise.reject(err)
 			}
