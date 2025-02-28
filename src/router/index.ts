@@ -1,10 +1,19 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 import commonRoute from './modules/common'
 import daotinRoute from './modules/daotin'
 import { localMng } from '@/utils/storage-mng'
 import { TokenName } from '@/configs/const'
 import { useAppStoreWithOut } from '@/stores'
+
+// Configure nprogress
+NProgress.configure({
+	showSpinner: false, // 是否显示加载动画
+	easing: 'ease', // 动画效果
+	speed: 400, // 动画速度
+})
 
 // 不需要鉴权的外部界面
 const outerPaths: RouteRecordRaw[] = [
@@ -63,6 +72,8 @@ const router = createRouter({
 
 // 全局路由守卫
 router.beforeEach(async to => {
+	NProgress.start()
+
 	const appStore = useAppStoreWithOut()
 	const title = (to.meta && (to.meta.title as string)) || ''
 	if (title) {
@@ -87,6 +98,11 @@ router.beforeEach(async to => {
 		appStore.getUserInfo()
 		appStore.getMenuList()
 	}
+})
+
+// Add progress bar complete after navigation
+router.afterEach(() => {
+	NProgress.done()
 })
 
 export default router

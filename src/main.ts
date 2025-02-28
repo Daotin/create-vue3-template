@@ -10,11 +10,9 @@ import apis from '@/apis'
 import { getImageSrc } from '@/utils/cdn'
 import _ from 'lodash-es'
 import directives from './directives'
-
 import i18n from './i18n'
 
 import 'virtual:svg-icons-register'
-
 import './assets/styles/main.less'
 
 window.$message = message

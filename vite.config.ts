@@ -28,9 +28,10 @@ const resolve = (dir: string) => path.resolve(process.cwd(), dir)
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+	const env = loadEnv(mode, process.cwd())
 	return {
 		define: {
-			'process.env': { ...process.env, ...loadEnv(mode, process.cwd()) },
+			'process.env': { ...process.env, ...env },
 		},
 		plugins: [
 			vue(),
@@ -41,7 +42,7 @@ export default defineConfig(({ mode }) => {
 			}),
 			Components({
 				// 生成components.d.ts 文件
-				// dts: true,
+				dts: true, // 生成组件类型文件
 				resolvers: mode !== 'development' ? ElementPlusResolver() : undefined,
 			}),
 			// 开发环境完整引入element-plus
@@ -50,14 +51,7 @@ export default defineConfig(({ mode }) => {
 				transform(code, id) {
 					if (mode === 'development' && /src\/main.ts$/.test(id)) {
 						return {
-							code: code.replace(
-								`app.mount("#app")`,
-								`import ElementPlus from 'element-plus';
-                 import 'element-plus/dist/index.css';
-                 import './mocks';
-                 app.use(ElementPlus);
-                 app.mount("#app")`
-							),
+							code: `${code};import ElementPlus from 'element-plus';import 'element-plus/dist/index.css';app.use(ElementPlus);import './mocks'`,
 							map: null,
 						}
 					}
@@ -88,6 +82,17 @@ export default defineConfig(({ mode }) => {
 				// URL:如果url参数是相对 URL，则构造函数将使用url参数和可选的base参数作为基础
 				'@': fileURLToPath(new URL('./src', import.meta.url)),
 				// '@': resolve('./src'),
+			},
+		},
+		server: {
+			host: true, // 是否开启host
+			port: 5173,
+			proxy: {
+				'/api': {
+					target: env.VITE_PROXY_URL,
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/api/, ''),
+				},
 			},
 		},
 	}

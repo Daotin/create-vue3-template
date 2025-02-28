@@ -7,3 +7,4 @@ declare interface Window {
 }
 
 declare module 'mockjs'
+declare module 'nprogress'

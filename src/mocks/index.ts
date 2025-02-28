@@ -6,5 +6,5 @@ import './modules/upload'
 
 //延时数据返回
 Mock.setup({
-	timeout: '1000-5000',
+	timeout: '100-500',
 })
