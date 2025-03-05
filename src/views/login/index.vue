@@ -3,17 +3,18 @@ import type { FormRules } from 'element-plus'
 import { useAppStore } from '@/stores'
 import LoginBg from '@/assets/images/login/login-bg.jpg?url'
 import { waitForImageLoad } from '@/utils'
+import type { ILoginParams } from '@/models/common'
 
 const appStore = useAppStore()
 
-const formData = reactive({
-	name: 'daotin',
-	pwd: '123',
+const formData = reactive<ILoginParams>({
+	username: 'daotin',
+	password: '123',
 })
 
 const rules = reactive<FormRules>({
-	name: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-	pwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+	password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 })
 
 const formRef = ref()
@@ -60,11 +61,11 @@ onMounted(async () => {
 				:rules="rules"
 				style="max-width: 460px"
 			>
-				<el-form-item label="账号" prop="name">
-					<el-input v-model="formData.name" />
+				<el-form-item label="账号" prop="username">
+					<el-input v-model="formData.username" />
 				</el-form-item>
-				<el-form-item label="密码" prop="pwd">
-					<el-input v-model="formData.pwd" />
+				<el-form-item label="密码" prop="password">
+					<el-input v-model="formData.password" />
 				</el-form-item>
 			</el-form>
 			<p class="black9">Tip: 账号密码随意</p>
