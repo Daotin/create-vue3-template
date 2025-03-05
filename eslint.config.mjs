@@ -12,13 +12,12 @@ import pluginVue from 'eslint-plugin-vue'
 // 导入 Prettier ESLint 插件，用于代码格式化的集成
 import pluginPrettier from 'eslint-plugin-prettier'
 
-// 声明配置的类型，使用 ESLint 的类型定义
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-	// 基础文件匹配配置
+	// 匹配所有的 JS、TS 和 Vue 文件
+	{ files: ['**/*.{js,mjs,cjs,ts,vue}'] },
+	// 配置语言选项
 	{
-		// 匹配所有的 JS、TS 和 Vue 文件
-		files: ['**/*.{js,mjs,cjs,ts,vue}'],
 		languageOptions: {
 			// 合并多个环境的全局变量
 			globals: {
@@ -28,17 +27,15 @@ export default [
 			},
 		},
 	},
-
-	// 启用 JavaScript 推荐规则配置
+	// 使用 ESLint 官方推荐的规则配置
 	pluginJs.configs.recommended,
-
-	// 启用 TypeScript 推荐规则配置
+	// 使用 TypeScript ESLint 推荐的规则配置
 	...tseslint.configs.recommended,
-
-	// 启用 Vue3 推荐规则配置（使用新的 flat 格式）
-	...pluginVue.configs['flat/recommended'],
-
-	// Vue 文件的专门解析配置
+	// 使用 Vue 官方推荐的规则配置
+	// essential 包含了最基本和重要的规则集,主要用于捕获常见错误
+	// recommended 在 essential 的基础上增加了更多代码风格相关的规则
+	...pluginVue.configs['flat/essential'],
+	// 配置 Vue 文件的解析器选项
 	{
 		files: ['**/*.vue'],
 		languageOptions: {
@@ -53,22 +50,23 @@ export default [
 				sourceType: 'module',
 			},
 		},
+		rules: {
+			// 在 Vue 文件中放宽命名规则限制
+			'@typescript-eslint/naming-convention': [
+				'warn',
+				{
+					// 变量和函数名使用小驼峰命名
+					selector: ['variable', 'function'],
+					format: ['camelCase'],
+				},
+			],
+		},
 	},
 
-	/**
-	 * 启用 Prettier 推荐配置，用于代码格式化。
-	 *
-	 * recommended 配置实际上会启用 'prettier/prettier' 规则,但不会指定具体的 Prettier 选项
-	 * 当我们在 rules 中配置 'prettier/prettier' 时,实际上是在覆盖/补充 recommended 中的默认配置
-	 *
-	 * 所以顺序是：
-	 * 1、先加载 pluginPrettier.configs.recommended 启用基础的 Prettier 支持
-	 * 2、然后通过自定义规则配置来设置具体的 Prettier 格式化选项
-	 */
-	pluginPrettier.configs.recommended,
-
-	// 自定义规则配置
 	{
+		plugins: {
+			prettier: pluginPrettier,
+		},
 		rules: {
 			// 配置缩进规则：4个空格，switch语句缩进1级
 			// ESLint 的 indent 规则负责检查代码缩进
@@ -183,22 +181,6 @@ export default [
 
 			// 禁用组件名必须多个单词的规则
 			'vue/multi-word-component-names': 'off',
-		},
-	},
-
-	// Vue 文件的特殊规则配置
-	{
-		files: ['*.vue'],
-		rules: {
-			// 在 Vue 文件中放宽命名规则限制
-			'@typescript-eslint/naming-convention': [
-				'warn',
-				{
-					// 变量和函数名使用小驼峰命名
-					selector: ['variable', 'function'],
-					format: ['camelCase'],
-				},
-			],
 		},
 	},
 ]

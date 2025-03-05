@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
 	return {
 		define: {
 			'process.env': { ...process.env, ...env },
+			__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false, // 控制生产环境是否显示更详细的 SSR Hydration 不匹配信息。
 		},
 		plugins: [
 			vue(),
