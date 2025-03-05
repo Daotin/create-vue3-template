@@ -2,8 +2,6 @@ import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-rou
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-import commonRoute from './modules/common'
-import daotinRoute from './modules/daotin'
 import { localMng } from '@/utils/storage-mng'
 import { TokenName } from '@/configs/const'
 import { useAppStoreWithOut } from '@/stores'
@@ -39,13 +37,23 @@ const outerPaths: RouteRecordRaw[] = [
 	},
 ]
 
+// 自动导入所有路由模块
+// eager: true 同步导入 false 动态导入
+const modules = import.meta.glob('./modules/**/*.ts', { eager: true })
+
+// 合并所有路由模块
+const moduleRoutes: RouteRecordRaw[] = []
+Object.keys(modules).forEach(key => {
+	const mod = modules[key] as { default: RouteRecordRaw[] }
+	moduleRoutes.push(...mod.default)
+})
 // 需要鉴权的界面
 const innerPaths: RouteRecordRaw[] = [
 	{
 		name: 'Portal',
 		path: '/portal',
 		component: () => import('@/layouts/index.vue'),
-		children: [...commonRoute, ...daotinRoute],
+		children: [...moduleRoutes],
 	},
 ]
 
