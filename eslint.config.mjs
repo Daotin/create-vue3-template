@@ -11,6 +11,7 @@ import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 // 导入 Prettier ESLint 插件，用于代码格式化的集成
 import pluginPrettier from 'eslint-plugin-prettier'
+// import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -35,54 +36,23 @@ export default [
 	// essential 包含了最基本和重要的规则集,主要用于捕获常见错误
 	// recommended 在 essential 的基础上增加了更多代码风格相关的规则
 	...pluginVue.configs['flat/essential'],
-	// 配置 Vue 文件的解析器选项
-	{
-		files: ['**/*.vue'],
-		languageOptions: {
-			// 使用 Vue ESLint 解析器作为主解析器
-			parser: pluginVue.parser,
-			parserOptions: {
-				// 使用 TypeScript 解析器解析 <script> 块
-				parser: tseslint.parser,
-				// 使用最新的 ECMAScript 版本
-				ecmaVersion: 'latest',
-				// 使用 ESM 模块化方案
-				sourceType: 'module',
-			},
-		},
-		rules: {
-			// 在 Vue 文件中放宽命名规则限制
-			'@typescript-eslint/naming-convention': [
-				'warn',
-				{
-					// 变量和函数名使用小驼峰命名
-					selector: ['variable', 'function'],
-					format: ['camelCase'],
-				},
-			],
-		},
-	},
 
+	// 配置 Prettier 插件
 	{
 		plugins: {
 			prettier: pluginPrettier,
 		},
 		rules: {
-			// 配置缩进规则：4个空格，switch语句缩进1级
-			// ESLint 的 indent 规则负责检查代码缩进
-			// Prettier 也会通过 tabWidth 和 useTabs 来控制缩进格式
-			// 删除 indent 规则，让 Prettier 完全控制缩进
-			// indent: ['error', 4, { SwitchCase: 1 }],
-
-			// Prettier 格式化配置
+			// 启用prettier的规则
+			// TODO: 其实可以不需要，因为在保存的时候会使用 .prettierrc.js 的配置进行格式化，跟这里的配置相同，所以不会出现冲突
 			'prettier/prettier': [
-				'error',
+				'warn',
 				{
 					printWidth: 120, // 每行代码最大长度
 					semi: false, // 不使用分号
 					singleQuote: true, // 使用单引号
-					tabWidth: 2, // 缩进使用 2 个空格
-					useTabs: true, // 使用 tab 进行缩进
+					// tabWidth: 4, // 缩进使用4个空格
+					useTabs: true, // 使用tab而不是空格
 					trailingComma: 'es5', // 在 ES5 中有效的结尾逗号（对象，数组等）
 					jsxBracketSameLine: false, // JSX 标签的 > 放在最后一行的末尾
 					arrowParens: 'avoid', // 当箭头函数仅有一个参数时，省略参数括号
@@ -93,20 +63,26 @@ export default [
 			// 警告未使用的变量（TypeScript）
 			'@typescript-eslint/no-unused-vars': 'warn',
 
+			// 关闭未定义变量的检查
+			'no-undef': 'off',
+
+			// 关闭空块的检查
+			'no-empty': 'off',
+
 			// 禁止使用嵌套的三目运算符，提高代码可读性
-			'no-nested-ternary': 'error',
+			'no-nested-ternary': 'warn',
 
 			// 注释规则配置
 			// 要求注释符号 // 后必须跟随至少一个空格
-			'spaced-comment': ['error', 'always', { markers: ['/'] }],
+			'spaced-comment': ['warn', 'always', { markers: ['/'] }],
 			// 要求注释必须独立成行，放在代码上方
-			'line-comment-position': ['error', { position: 'above' }],
+			'line-comment-position': ['warn', { position: 'above' }],
 			// 多行注释必须使用 /** ... */ 风格
-			'multiline-comment-style': ['error', 'starred-block'],
+			'multiline-comment-style': ['warn', 'starred-block'],
 
 			// TypeScript 命名规范配置
 			'@typescript-eslint/naming-convention': [
-				'error',
+				'warn',
 				{
 					// 接口名必须以 I 开头，使用大驼峰命名
 					selector: 'interface',
@@ -137,7 +113,7 @@ export default [
 					format: ['PascalCase', 'UPPER_CASE'],
 				},
 				{
-					// 变量使用小驼峰命名
+					// 普通变量使用小驼峰命名，特殊情况允许大写
 					selector: 'variable',
 					format: ['camelCase'],
 				},
@@ -153,7 +129,7 @@ export default [
 			],
 
 			// 允许使用 any 类型
-			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-explicit-any': 'warn',
 
 			// 关闭分号检查
 			semi: 'off',
@@ -162,7 +138,7 @@ export default [
 			'@typescript-eslint/no-this-alias': 'off',
 
 			// 关闭 debugger 语句的限制
-			'eslintno-debugger': 'off',
+			'no-debugger': 'error',
 
 			// 关闭 Vue 模板中未使用变量的警告
 			'vue/no-unused-vars': 'off',
@@ -183,4 +159,40 @@ export default [
 			'vue/multi-word-component-names': 'off',
 		},
 	},
+
+	// 配置 Vue 文件的解析器选项
+	// TIPS: 顺序很重要，vue的配置会覆盖上面rules的配置
+	{
+		files: ['**/*.vue'],
+		languageOptions: {
+			// 使用 Vue ESLint 解析器作为主解析器
+			parser: pluginVue.parser,
+			parserOptions: {
+				// 使用 TypeScript 解析器解析 <script> 块
+				parser: tseslint.parser,
+				// 使用最新的 ECMAScript 版本
+				ecmaVersion: 'latest',
+				// 使用 ESM 模块化方案
+				sourceType: 'module',
+			},
+		},
+		rules: {
+			// 在 Vue 文件中放宽命名规则限制
+			'@typescript-eslint/naming-convention': [
+				'warn',
+				{
+					// 变量和函数名使用小驼峰命名
+					selector: ['variable', 'function'],
+					format: ['camelCase'],
+				},
+			],
+		},
+	},
+	/**
+   * - 注册prettier插件
+    - 开启prettier/prettier规则
+    - 关闭所有可能与prettier冲突的ESLint规则
+    如果完全接受prettier的推荐配置，使用这方式更简洁
+   */
+	// eslintPluginPrettierRecommended,
 ]
