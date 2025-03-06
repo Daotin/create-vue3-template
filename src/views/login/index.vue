@@ -27,9 +27,11 @@ async function handleLogin() {
 		window.$message.success('登录成功')
 		// localMng.setItem(TokenName, Authorization)
 
-		// await appStore.getUserInfo(true)
-		// await appStore.loadSysMenuNav()
-		// router.push('/')
+		/*
+		 * await appStore.getUserInfo(true)
+		 * await appStore.loadSysMenuNav()
+		 * router.push('/')
+		 */
 	} catch (error) {
 		console.error(error)
 	} finally {

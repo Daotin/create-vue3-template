@@ -1,5 +1,7 @@
-// ESLint 新版 Flat Config 配置文件
-// 采用 ESM 模块化方案，文件后缀为 .mjs
+/*
+ * ESLint 新版 Flat Config 配置文件
+ * 采用 ESM 模块化方案，文件后缀为 .mjs
+ */
 
 // 导入全局变量定义，包含预定义的浏览器、Node.js等环境的全局变量
 import globals from 'globals'
@@ -9,9 +11,13 @@ import pluginJs from '@eslint/js'
 import tseslint from 'typescript-eslint'
 // 导入 Vue.js 的 ESLint 插件，用于 Vue 单文件组件的检查
 import pluginVue from 'eslint-plugin-vue'
-// 导入 Prettier ESLint 插件，用于代码格式化的集成
+/*
+ * 导入 Prettier ESLint 插件，用于代码格式化的集成
+ * 将Prettier作为ESLint规则运行，并将差异报告为单独的 ESLint 问题。
+ */
 import pluginPrettier from 'eslint-plugin-prettier'
-// import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -32,9 +38,11 @@ export default [
 	pluginJs.configs.recommended,
 	// 使用 TypeScript ESLint 推荐的规则配置
 	...tseslint.configs.recommended,
-	// 使用 Vue 官方推荐的规则配置
-	// essential 包含了最基本和重要的规则集,主要用于捕获常见错误
-	// recommended 在 essential 的基础上增加了更多代码风格相关的规则
+	/*
+	 * 使用 Vue 官方推荐的规则配置
+	 * essential 包含了最基本和重要的规则集,主要用于捕获常见错误
+	 * recommended 在 essential 的基础上增加了更多代码风格相关的规则
+	 */
 	...pluginVue.configs['flat/essential'],
 
 	// 配置 Prettier 插件
@@ -43,8 +51,10 @@ export default [
 			prettier: pluginPrettier,
 		},
 		rules: {
-			// 启用prettier的规则
-			// TODO: 其实可以不需要，因为在保存的时候会使用 .prettierrc.js 的配置进行格式化，跟这里的配置相同，所以不会出现冲突
+			/*
+			 * 启用prettier的规则
+			 * TODO: 其实可以不需要，因为在保存的时候会使用 .prettierrc.js 的配置进行格式化，跟这里的配置相同，所以不会出现冲突
+			 */
 			'prettier/prettier': [
 				'warn',
 				{
@@ -72,8 +82,10 @@ export default [
 			// 禁止使用嵌套的三目运算符，提高代码可读性
 			'no-nested-ternary': 'warn',
 
-			// 注释规则配置
-			// 要求注释符号 // 后必须跟随至少一个空格
+			/*
+			 * 注释规则配置
+			 * 要求注释符号 // 后必须跟随至少一个空格
+			 */
 			'spaced-comment': ['warn', 'always', { markers: ['/'] }],
 			// 要求注释必须独立成行，放在代码上方
 			'line-comment-position': ['warn', { position: 'above' }],
@@ -160,8 +172,10 @@ export default [
 		},
 	},
 
-	// 配置 Vue 文件的解析器选项
-	// TIPS: 顺序很重要，vue的配置会覆盖上面rules的配置
+	/*
+	 * 配置 Vue 文件的解析器选项
+	 * TIPS: 顺序很重要，vue的配置会覆盖上面rules的配置
+	 */
 	{
 		files: ['**/*.vue'],
 		languageOptions: {
@@ -188,11 +202,6 @@ export default [
 			],
 		},
 	},
-	/**
-   * - 注册prettier插件
-    - 开启prettier/prettier规则
-    - 关闭所有可能与prettier冲突的ESLint规则
-    如果完全接受prettier的推荐配置，使用这方式更简洁
-   */
-	// eslintPluginPrettierRecommended,
+	// 关闭所有不必要的或可能与Prettier冲突的规则。
+	eslintConfigPrettier,
 ]
