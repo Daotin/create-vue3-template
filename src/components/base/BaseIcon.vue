@@ -47,18 +47,23 @@ const iconStyle = computed(() => ({
 	fill: currentColor;
 	stroke: currentColor;
 	outline-style: none;
+
 	&.blue {
 		color: @blue;
 	}
+
 	&.red {
 		color: @red;
 	}
+
 	&.green {
 		color: @green;
 	}
+
 	&.orange {
 		color: @orange;
 	}
+
 	&.gray {
 		color: @gray;
 	}

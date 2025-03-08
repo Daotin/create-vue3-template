@@ -47,6 +47,7 @@ defineExpose({
 	.chart-item {
 		width: 100%;
 		height: 400px;
+
 		.base-echarts {
 			width: 100%;
 		}

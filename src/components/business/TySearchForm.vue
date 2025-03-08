@@ -271,6 +271,7 @@ onMounted(() => {
 .toggle-btn {
 	margin-left: -8px;
 	padding: 10px;
+
 	&.active {
 		color: @blue;
 		background-color: @bgc-blue;

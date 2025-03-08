@@ -56,16 +56,19 @@ withDefaults(defineProps<IProps>(), {
 			border-color: @green;
 			color: @green;
 		}
+
 		&-info {
 			background-color: @black9;
 			border-color: @black9;
 			color: @black9;
 		}
+
 		&-warning {
 			background-color: @orange;
 			border-color: @orange;
 			color: @orange;
 		}
+
 		&-danger {
 			background-color: @red;
 			border-color: @red;

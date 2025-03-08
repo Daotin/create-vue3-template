@@ -25,21 +25,25 @@ const isCollapse = computed(() => appStore.isCollapse)
 <style lang="less" scoped>
 .layouts-wrap {
 }
+
 .el-container {
 	:deep(.el-header) {
 		padding: 0;
 		box-shadow: @shadow-down;
 		z-index: 100;
 	}
+
 	:deep(.el-aside) {
 		box-shadow: @shadow-right;
 		z-index: 10;
 		transition: width 0.2s;
 	}
+
 	:deep(.el-main) {
 		padding: 20px;
 		padding-bottom: 0;
 		background-color: @bgc;
+
 		.main-content {
 			padding: 20px;
 			background-color: #fff;

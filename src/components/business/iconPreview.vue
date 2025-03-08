@@ -69,18 +69,22 @@ const getSvgUrl = (name: string) => {
 <style lang="less" scoped>
 .icons-preview {
 	background-color: #fff;
+
 	h1 {
 		font-size: 20px;
 	}
+
 	.icon-box {
 		ul {
 			li {
 				width: 100px;
 				height: 100px;
 				border: 1px solid @border-color;
+
 				&:hover {
 					background-color: @bgc;
 				}
+
 				:deep(.el-image) {
 					img {
 						width: 30px !important;

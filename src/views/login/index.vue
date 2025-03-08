@@ -82,6 +82,7 @@ onMounted(async () => {
 .login-wrap {
 	background: url('@/assets/images/login/login-bg-placeholder.jpg') center center no-repeat;
 	background-size: cover;
+
 	.login-content {
 		width: 500px;
 		margin: 0 auto;
