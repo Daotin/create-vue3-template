@@ -1,29 +1,34 @@
 /**
- * 
-- `Level` ：为0，1，2三个数的其中一值。0代表让本规则无效；1代表以警告提示，不影响编译运行；2代表以错误提示，阻止编译运行。以上面的例子则代表该规则不会起作用。
-- `Applicable`**：**第二位为应用与否，为always和never其中一值。
-- `Value`：适用于该规则的值。
+ *
+ *- `Level` ：为0，1，2三个数的其中一值。0代表让本规则无效；1代表以警告提示，不影响编译运行；2代表以错误提示，阻止编译运行。以上面的例子则代表该规则不会起作用。
+ *- `Applicable`**：**第二位为应用与否，为always和never其中一值。
+ *- `Value`：适用于该规则的值。
  */
 module.exports = {
 	extends: ['@commitlint/config-conventional'],
 	rules: {
-		// case可选值
-		// 'lower-case' 小写 lowercase
-		// 'upper-case' 大写 UPPERCASE
-		// 'camel-case' 小驼峰 camelCase
-		// 'kebab-case' 短横线 kebab-case
-		// 'pascal-case' 大驼峰 PascalCase
-		// 'sentence-case' 首字母大写 Sentence case
-		// 'snake-case' 下划线 snake_case
-		// 'start-case' 所有首字母大写 start-case
+		/*
+		 * case可选值
+		 * 'lower-case' 小写 lowercase
+		 * 'upper-case' 大写 UPPERCASE
+		 * 'camel-case' 小驼峰 camelCase
+		 * 'kebab-case' 短横线 kebab-case
+		 * 'pascal-case' 大驼峰 PascalCase
+		 * 'sentence-case' 首字母大写 Sentence case
+		 * 'snake-case' 下划线 snake_case
+		 * 'start-case' 所有首字母大写 start-case
+		 */
 		'type-enum': [
 			2,
 			'always',
 			['feat', 'fix', 'docs', 'style', 'ui', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert'],
 		], // type的类型只能从中取值
 		'type-case': [2, 'always', 'lower-case'], // <type>格式小写
-		'type-empty': [2, 'never'], // <type> 不能为空
+		// <type> 可以为空
+		'type-empty': [2, 'never'],
+		// <type> 最小长度
 		'type-min-length': [0, 'always', 0],
+		// <type> 最大长度
 		'type-max-length': [0, 'always', Infinity],
 
 		'scope-enum': [0, 'always', []],

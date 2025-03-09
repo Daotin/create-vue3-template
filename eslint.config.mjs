@@ -204,4 +204,69 @@ export default [
 	},
 	// 关闭所有不必要的或可能与Prettier冲突的规则。
 	eslintConfigPrettier,
+
+	// 配置要忽略的文件和目录
+	{
+		ignores: [
+			// 构建产物和依赖
+			'dist/**',
+			'dist-ssr/**',
+			'build/**',
+			'node_modules/**',
+			'coverage/**',
+
+			// 日志文件
+			'logs/**',
+			'*.log',
+			'npm-debug.log*',
+			'yarn-debug.log*',
+			'yarn-error.log*',
+			'pnpm-debug.log*',
+			'lerna-debug.log*',
+
+			// 自动生成的文件
+			'auto-imports.d.ts',
+			'components.d.ts',
+			'*.local',
+			'*.d.ts',
+			'!src/**/*.d.ts',
+
+			// 编辑器和IDE
+			'.vscode/*',
+			'!.vscode/extensions.json',
+			'.idea/**',
+			'*.suo',
+			'*.ntvs*',
+			'*.njsproj',
+			'*.sln',
+			'*.sw?',
+
+			// 测试相关
+			'/cypress/videos/',
+			'/cypress/screenshots/',
+
+			// 配置文件
+			'*.config.js',
+			'vite.config.ts',
+			'vitest.config.ts',
+			// 不要忽略本文件，否则配置无效
+			'!eslint.config.mjs',
+
+			// 文档和资源
+			'*.md',
+			'/public/**',
+			'/docs/**',
+			'.husky/**',
+			'/bin/**',
+			'Dockerfile',
+
+			// 其他系统文件
+			'.DS_Store',
+			'.local',
+
+			// 压缩和临时文件
+			'*.min.js',
+			'*.temp',
+		],
+	},
 ]
