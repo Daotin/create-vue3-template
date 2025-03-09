@@ -29,24 +29,27 @@ const isCollapse = computed(() => appStore.isCollapse)
 .el-container {
 	:deep(.el-header) {
 		padding: 0;
-		box-shadow: @shadow-down;
+		box-shadow: var(--shadow-down);
 		z-index: 100;
 	}
 
 	:deep(.el-aside) {
-		box-shadow: @shadow-right;
+		box-shadow: var(--shadow-right);
 		z-index: 10;
 		transition: width 0.2s;
+		background-color: var(--bgc);
+		will-change: background-color, color;
 	}
 
 	:deep(.el-main) {
 		padding: 20px;
 		padding-bottom: 0;
-		background-color: @bgc;
+		background-color: var(--bgc);
 
 		.main-content {
 			padding: 20px;
-			background-color: #fff;
+			background-color: var(--main-bg-color);
+			will-change: background-color, color;
 			border-radius: 4px;
 			overflow: hidden;
 			overflow-y: auto;

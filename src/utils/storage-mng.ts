@@ -11,13 +11,15 @@ const localKeys = [
 	'sideCollapse',
 	// token
 	TokenName,
+	// 主题模式
+	'theme_mode',
 ]
 
 // 项目中所有存在sessionStorage中的数据的名称
 const sessionKeys = <string[]>[]
 
-type localKeyName = typeof localKeys[number]
-type sessionKeyName = typeof sessionKeys[number]
+type localKeyName = (typeof localKeys)[number]
+type sessionKeyName = (typeof sessionKeys)[number]
 type keyName = localKeyName | sessionKeyName
 type storageData = {
 	value: any
@@ -37,8 +39,10 @@ class StorageMng {
 
 	public setItem(key: keyName, value: any, duration?: number) {
 		try {
-			let data: storageData = {
+			const data: storageData = {
+				// 存储的值
 				value: value,
+				// 过期时间
 				expiryTime: duration ? this.getCurrentTimeStamp() + duration : 0,
 			}
 			this.mode.setItem(`${this.prefix}${key}`, window.JSON.stringify(data))
@@ -50,13 +54,14 @@ class StorageMng {
 	public getItem(key: keyName) {
 		const result = this.mode.getItem(`${this.prefix}${key}`)
 		if (!result || result === 'null') return null
-		let now = this.getCurrentTimeStamp()
+		const now = this.getCurrentTimeStamp()
 		let obj: storageData
 		try {
 			obj = window.JSON.parse(result)
 		} catch (error) {
 			return null
 		}
+		// 如果过期时间为0，或者过期时间大于当前时间，则返回存储的值
 		if (obj.expiryTime === 0 || obj.expiryTime > now) {
 			return obj.value
 		}

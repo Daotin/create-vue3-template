@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useAppStore } from '@/stores'
+import { useAppStore, useThemeStore } from '@/stores'
 
 const appStore = useAppStore()
+const themeStore = useThemeStore()
 
 const userName = computed(() => appStore.userInfo?.userName || '')
+const currentTheme = computed(() => themeStore.theme)
 
 const systemName = process.env.VITE_SYSTEM_NAME || "Daotin2's System"
 
@@ -18,6 +20,11 @@ async function handleLogout() {
 		appStore.logout()
 	} catch (error) {}
 }
+
+function toggleTheme() {
+	themeStore.toggleTheme()
+}
+
 onMounted(() => {})
 </script>
 <template>
@@ -33,6 +40,10 @@ onMounted(() => {})
 			/>
 		</div>
 		<div class="user-info">
+			<span class="ml-3 mr-5 cursor-pointer" @click="toggleTheme">
+				<BaseIcon :name="currentTheme === 'light' ? 'moon' : 'sun'" :size="18" />
+				<span class="align-middle ml-2">{{ currentTheme === 'light' ? '暗黑模式' : '亮色模式' }}</span>
+			</span>
 			<span class="mr-3">
 				<BaseIcon name="avatar" :size="16" />
 				<span class="align-middle ml-2">{{ userName }}</span>
@@ -44,7 +55,7 @@ onMounted(() => {})
 <style lang="less" scoped>
 .layouts-header-box {
 	height: 60px;
-	background-color: @blue;
+	background-color: var(--blue);
 	color: #fff;
 }
 </style>

@@ -13,7 +13,7 @@ import directives from './directives'
 import i18n from './i18n'
 
 import 'virtual:svg-icons-register'
-import './assets/styles/main.less'
+import './assets/styles/index.less'
 
 window.$message = message
 window.$apis = apis

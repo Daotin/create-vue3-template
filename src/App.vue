@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-// import { RouterLink, RouterView } from 'vue-router'
+// 导入并初始化主题
+import { useThemeStore } from '@/stores'
+useThemeStore().initTheme()
 </script>
 
 <template>

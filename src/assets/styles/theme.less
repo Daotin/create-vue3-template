@@ -1,0 +1,96 @@
+:root {
+	/* 亮色主题变量 */
+	--theme: #01a2ff;
+	--primary-color: var(--theme);
+	--success-color: #52c41a;
+	--warning-color: #f7b85c;
+	--danger-color: #f0506c;
+	--info-color: #999;
+	--purple-color: #7a7fff;
+	--dark-blue-color: #004dff;
+
+	--green: var(--success-color);
+	--red: var(--danger-color);
+	--orange: var(--warning-color);
+	--purple: var(--purple-color);
+	--blue: var(--primary-color);
+	--dark-blue: var(--dark-blue-color);
+	--gray: var(--info-color);
+
+	/* 文字颜色 */
+	--black3: #333;
+	--black6: #666;
+	--black9: #999;
+
+	--primary-text: var(--black3);
+	--regular-text: var(--black6);
+	--secondary-text: var(--black9);
+
+	/* 边框颜色 */
+	--border-color: #dcdfe6;
+
+	/* 边框样式 */
+	--base-border: 1px solid var(--border-color);
+	--border-radius: 8px;
+	--box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+
+	/* 背景色 */
+	--bgc: #f6f6f6;
+	--bgc-blue: #ebf6ff;
+	--bgc-red: #feeaea;
+	--bgc-green: #e5f9f7;
+	--bgc-purple: #e8e9ff;
+	--bgc-dark-blue: #eaf0ff;
+	--main-bg-color: #ffffff;
+
+	/* 其他变量 */
+	--shadow-up: 0 -4px 4px 0 rgba(0, 0, 0, 0.1);
+	--shadow-down: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+	--shadow-left: -4px 0 4px 0 rgba(0, 0, 0, 0.1);
+	--shadow-right: 4px 0 4px 0 rgba(0, 0, 0, 0.1);
+	--loginHeight: 50px;
+}
+
+/* 暗色主题 */
+html[data-theme='dark'] {
+	--theme: #177ddc;
+	--primary-color: var(--theme);
+	--success-color: #49aa19;
+	--warning-color: #d89614;
+	--danger-color: #a61d24;
+	--info-color: #666;
+	--purple-color: #9254de;
+	--dark-blue-color: #177ddc;
+
+	--green: var(--success-color);
+	--red: var(--danger-color);
+	--orange: var(--warning-color);
+	--purple: var(--purple-color);
+	--blue: var(--primary-color);
+	--dark-blue: var(--dark-blue-color);
+	--gray: var(--info-color);
+
+	/* 文字颜色 */
+	--black3: #e8e8e8;
+	--black6: #bfbfbf;
+	--black9: #8c8c8c;
+
+	--primary-text: var(--black3);
+	--regular-text: var(--black6);
+	--secondary-text: var(--black9);
+
+	/* 边框颜色 */
+	--border-color: #434343;
+
+	/* 背景色 */
+	--bgc: #141414;
+	--bgc-blue: #111a2c;
+	--bgc-red: #2a1215;
+	--bgc-green: #162312;
+	--bgc-purple: #1a1325;
+	--bgc-dark-blue: #111d2c;
+	--main-bg-color: #1f1f1f;
+
+	/* 边框样式不变，会使用新的颜色变量值 */
+	--box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+}
