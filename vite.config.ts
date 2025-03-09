@@ -50,10 +50,12 @@ export default defineConfig(({ mode }) => {
 						prefix: 'Icon',
 					}),
 				],
+				// 生成auto-imports.d.ts 文件，位置在 src/types/auto-imports.d.ts
+				dts: fileURLToPath(new URL('./types/auto-imports.d.ts', import.meta.url)),
 			}),
 			Components({
-				// 生成components.d.ts 文件
-				dts: true, // 生成组件类型文件
+				// 生成components.d.ts 文件，位置在 src/types/components.d.ts
+				dts: fileURLToPath(new URL('./types/components.d.ts', import.meta.url)),
 				resolvers: [
 					// 自动注册图标组件
 					IconsResolver({
