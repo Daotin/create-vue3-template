@@ -13,6 +13,8 @@ declare module '@vue/runtime-core' {
     BaseIconButton: typeof import('./src/components/base/BaseIconButton.vue')['default']
     BaseIconTip: typeof import('./src/components/base/BaseIconTip.vue')['default']
     BaseSearchButton: typeof import('./src/components/base/BaseSearchButton.vue')['default']
+    IconEpDelete: typeof import('~icons/ep/delete')['default']
+    IconEpEdit: typeof import('~icons/ep/edit')['default']
     IconPreview: typeof import('./src/components/business/iconPreview.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

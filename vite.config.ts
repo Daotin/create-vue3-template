@@ -10,6 +10,10 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
 
+// 引入 unplugin-icons
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+
 // 生产svg精灵图
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
@@ -39,12 +43,37 @@ export default defineConfig(({ mode }) => {
 			vueJsx(),
 			AutoImport({
 				imports: ['vue'], // 自动导入vue3 API
-				resolvers: [ElementPlusResolver()],
+				resolvers: [
+					ElementPlusResolver(),
+					// 自动导入图标组件
+					IconsResolver({
+						prefix: 'Icon',
+					}),
+				],
 			}),
 			Components({
 				// 生成components.d.ts 文件
 				dts: true, // 生成组件类型文件
-				resolvers: mode !== 'development' ? ElementPlusResolver() : undefined,
+				resolvers: [
+					// 自动注册图标组件
+					IconsResolver({
+						/**
+             * ep: Element Plus 图标
+                mdi: Material Design 图标
+                carbon: Carbon 图标
+                ant-design: Ant Design 图标
+                fa: Font Awesome 图标
+             */
+						enabledCollections: ['ep'], // 启用element-plus图标集
+						prefix: 'icon',
+					}),
+					...(mode !== 'development' ? [ElementPlusResolver()] : []),
+				],
+			}),
+			// 添加 Icons 插件
+			Icons({
+				autoInstall: true,
+				// compiler: 'vue3',
 			}),
 			// 开发环境完整引入element-plus
 			{
