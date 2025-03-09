@@ -29,5 +29,6 @@ coverage
 auto-imports.d.ts
 components.d.ts
 
-# Stylelint cache
+# cache
 .stylelintcache
+.eslintcache
