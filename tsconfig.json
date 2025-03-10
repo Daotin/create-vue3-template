@@ -3,7 +3,7 @@
 		// 使用的ES版本
 		"module": "ESNext",
 		// 用于选择模块解析策略
-		"moduleResolution": "nodenext",
+		"moduleResolution": "node",
 		// 是否可以导入 json module
 		"resolveJsonModule": true,
 		// 是否可以导入 class fields

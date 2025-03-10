@@ -4,7 +4,6 @@ import { useAppStore } from '@/stores'
 import LoginBg from '@/assets/images/login/login-bg.jpg?url'
 import { waitForImageLoad } from '@/utils'
 import type { ILoginParams } from '@/models/common'
-
 const appStore = useAppStore()
 
 const formData = reactive<ILoginParams>({
@@ -64,10 +63,18 @@ onMounted(async () => {
 				style="max-width: 460px"
 			>
 				<el-form-item label="账号" prop="username">
-					<el-input v-model="formData.username" />
+					<el-input v-model="formData.username">
+						<template #prefix>
+							<icon-ep-user />
+						</template>
+					</el-input>
 				</el-form-item>
 				<el-form-item label="密码" prop="password">
-					<el-input v-model="formData.password" />
+					<el-input v-model="formData.password">
+						<template #prefix>
+							<icon-ep-lock />
+						</template>
+					</el-input>
 				</el-form-item>
 			</el-form>
 			<p class="black9">Tip: 账号密码随意</p>
