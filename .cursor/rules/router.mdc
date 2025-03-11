@@ -1,0 +1,104 @@
+---
+description: Router模块编码规则
+globs: src/router/**/*
+---
+# Router模块编码规则
+
+## 文件结构
+
+- 主路由定义在`src/router/index.ts`中
+- 按业务模块划分子路由，放在`src/router/modules`目录下
+- 每个业务模块一个独立的路由文件
+
+## 命名规范
+
+- 路由文件名使用小写字母，采用camelCase命名法
+- 路由name属性使用camelCase命名法，保持唯一性
+- 路由path属性使用kebab-case命名法，以`/`开头
+
+## 代码规范
+
+- 使用`RouteRecordRaw`类型定义路由配置
+- 为每条路由配置添加meta信息，包含title等属性
+- 使用懒加载方式引入组件，提高性能
+- 相关路由应组织在同一个文件中
+
+## 示例代码
+
+```typescript
+import type { RouteRecordRaw } from 'vue-router'
+
+const route: RouteRecordRaw[] = [
+	{
+		path: '/home',
+		name: 'home',
+		component: () => import('@/views/HomeView.vue'),
+		meta: {
+			title: '首页',
+			icon: 'home',
+			keepAlive: true,
+			requiresAuth: true,
+		},
+	},
+	{
+		path: '/user',
+		name: 'user',
+		component: () => import('@/views/user/Index.vue'),
+		meta: {
+			title: '用户管理',
+			icon: 'user',
+			requiresAuth: true,
+		},
+		children: [
+			{
+				path: 'list',
+				name: 'userList',
+				component: () => import('@/views/user/List.vue'),
+				meta: {
+					title: '用户列表',
+					keepAlive: true,
+				},
+			},
+			{
+				path: 'detail/:id',
+				name: 'userDetail',
+				component: () => import('@/views/user/Detail.vue'),
+				meta: {
+					title: '用户详情',
+					hideInMenu: true,
+				},
+			},
+		],
+	},
+]
+
+export default route
+```
+
+## 路由配置要求
+
+1. 每个路由必须配置name属性，且全局唯一
+2. 每个路由必须配置meta.title属性，用于页面标题和菜单显示
+3. 使用懒加载方式引入组件：`() => import('@/views/XXX.vue')`
+4. 动态路由参数使用`:paramName`语法
+5. 嵌套路由使用children属性
+
+## Meta配置属性
+
+- `title`: 页面标题和菜单显示名称（必填）
+- `icon`: 菜单图标（可选）
+- `keepAlive`: 是否启用缓存（可选，默认false）
+- `requiresAuth`: 是否需要登录鉴权（可选，默认true）
+- `permissions`: 访问所需权限数组（可选）
+- `hideInMenu`: 是否在菜单中隐藏（可选，默认false）
+- `activeMenu`: 菜单激活路径（可选，用于详情页等）
+
+## 路由守卫配置
+
+在`src/router/index.ts`中配置全局路由守卫，处理以下逻辑：
+
+1. 登录状态验证
+2. 权限验证
+3. 页面标题设置
+4. 进度条控制
+5. 页面缓存控制

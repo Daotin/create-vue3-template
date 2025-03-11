@@ -1,0 +1,125 @@
+---
+description: Mock模块编码规则
+globs: src/mocks/**/*
+---
+# Mock模块编码规则
+
+## 文件结构
+
+- 所有Mock定义应放在`src/mocks/modules`目录下
+- 在`src/mocks/index.ts`中统一导入所有模块
+- 按API功能模块进行分类，与`src/apis/modules`保持一致
+
+## 命名规范
+
+- 文件名使用小写字母，采用camelCase命名法
+- 与对应的API模块保持相同的命名
+- Mock函数名使用camelCase命名法，表明数据用途
+
+## 代码规范
+
+- 使用`mockjs`库生成模拟数据
+- 为每个Mock函数添加注释，说明用途
+- 模拟数据结构应与实际API返回保持一致
+- 使用正则表达式匹配API请求路径
+
+## 示例代码
+
+```typescript
+import Mock from 'mockjs'
+import { basicSuccess } from './common'
+
+/**
+ * 登录接口mock
+ * @returns {object} 登录响应数据
+ */
+const login = () => {
+	return Mock.mock({
+		code: 200,
+		message: '操作成功',
+		body: {
+			token: 'MOCK_TOKEN_EXAMPLE',
+			userId: '@id',
+			username: '@name',
+			roles: ['admin'],
+			permissions: ['system:view', 'user:manage'],
+		},
+	})
+}
+
+/**
+ * 获取用户信息接口mock
+ * @returns {object} 用户信息响应数据
+ */
+const getUserInfo = () => {
+	return Mock.mock({
+		code: 200,
+		message: '操作成功',
+		body: {
+			userId: '@id',
+			username: '@name',
+			avatar: '@image("200x200")',
+			email: '@email',
+			phone: /^1[3-9]\d{9}$/,
+			roles: ['admin'],
+			'permissions|10': ['@word(5, 10):@word(3, 5)'],
+		},
+	})
+}
+
+// 拦截 Ajax 请求，返回模拟的响应数据
+Mock.mock(/sys\/login/, 'post', login)
+Mock.mock(/sys\/logout/, 'post', basicSuccess)
+Mock.mock(/sys\/user\/info/, 'get', getUserInfo)
+```
+
+## Mock实现要求
+
+1. 每个Mock函数前添加注释，说明用途
+2. 返回数据结构应与实际API保持一致
+3. 使用Mock.js内置占位符生成随机数据
+4. 为不同请求方法(GET/POST等)提供不同的处理逻辑
+5. 使用正则表达式匹配API路径，保持灵活性
+
+## 通用响应结构
+
+在`common.ts`中定义通用的响应结构：
+
+```typescript
+/**
+ * 基础成功响应
+ */
+export const basicSuccess = () => {
+	return {
+		code: 200,
+		message: '操作成功',
+		body: null,
+	}
+}
+
+/**
+ * 基础分页数据响应
+ * @param {Array} data 分页数据
+ */
+export const basicPage = (data: any[] = []) => {
+	const pageSize = 10
+	return {
+		code: 200,
+		message: '操作成功',
+		body: {
+			total: data.length,
+			current: 1,
+			pageSize: pageSize,
+			list: data.slice(0, pageSize),
+		},
+	}
+}
+```
+
+## 数据生成规范
+
+1. 使用Mock.js提供的占位符生成模拟数据
+2. 对于固定格式的数据，使用正则表达式生成
+3. 尽量使用逼真的数据，符合业务规则
+4. 对于分页数据，考虑total、current、pageSize等参数
+5. 在Mock.setup中配置合理的响应延时

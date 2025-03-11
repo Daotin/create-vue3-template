@@ -1,0 +1,177 @@
+---
+description: Components模块编码规则
+globs: src/components/**/*
+---
+# Components模块编码规则
+
+## 文件结构
+
+- 所有通用组件应放在`src/components`目录下
+- 按组件功能或类型进行分类，创建子目录
+- 每个组件一个独立的文件夹，包含组件文件和相关资源
+
+## 命名规范
+
+- 组件文件夹和文件名使用PascalCase命名法
+- 组件名称使用PascalCase命名法
+- 私有组件文件名以下划线开头
+- 基础组件可使用`Base`前缀，如`BaseButton`
+
+## 目录结构示例
+
+```
+src/components/
+├── Form/
+│   ├── SearchForm.vue       # 搜索表单组件
+│   └── FormItem.vue         # 表单项组件
+├── Table/
+│   ├── DataTable.vue        # 数据表格组件
+│   └── TableColumn.vue      # 表格列组件
+├── Dialog/
+│   └── ConfirmDialog.vue    # 确认对话框组件
+└── common/
+    ├── Icon.vue             # 图标组件
+    └── _utils.ts            # 私有工具函数
+```
+
+## 代码规范
+
+- 使用`<script setup lang="ts">`语法
+- 使用`defineProps`和`defineEmits`定义属性和事件
+- 使用`withDefaults`为属性指定默认值
+- 为组件和属性添加详细的TypeScript类型定义
+- 使用`v-bind="$attrs"`透传未声明的属性
+
+## 示例代码
+
+```vue
+<template>
+	<div class="search-form">
+		<el-form ref="formRef" :model="formData" :inline="true" @submit.prevent>
+			<slot></slot>
+			<div class="search-form__buttons">
+				<el-button type="primary" @click="handleSearch">{{ searchText }}</el-button>
+				<el-button @click="handleReset">{{ resetText }}</el-button>
+				<slot name="buttons"></slot>
+			</div>
+		</el-form>
+	</div>
+</template>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import type { FormInstance } from 'element-plus'
+
+// 定义Props接口
+interface SearchFormProps {
+	model: Record<string, any>
+	searchText?: string
+	resetText?: string
+	immediate?: boolean
+}
+
+// 定义Props和默认值
+const props = withDefaults(defineProps<SearchFormProps>(), {
+	searchText: '搜索',
+	resetText: '重置',
+	immediate: false,
+})
+
+// 定义事件
+const emit = defineEmits<{
+	search: [params: Record<string, any>]
+	reset: []
+}>()
+
+// 组件逻辑
+const formRef = ref<FormInstance>()
+const formData = ref({ ...props.model })
+
+// 监听model变化
+watch(
+	() => props.model,
+	newVal => {
+		formData.value = { ...newVal }
+	},
+	{ deep: true }
+)
+
+// 处理搜索
+const handleSearch = () => {
+	emit('search', formData.value)
+}
+
+// 处理重置
+const handleReset = () => {
+	if (formRef.value) {
+		formRef.value.resetFields()
+		emit('reset')
+		// 如果设置了immediate，重置后立即触发搜索
+		if (props.immediate) {
+			handleSearch()
+		}
+	}
+}
+
+// 对外暴露方法
+defineExpose({
+	getFormData: () => formData.value,
+	setFormData: (data: Record<string, any>) => {
+		formData.value = { ...data }
+	},
+})
+</script>
+
+<style scoped lang="scss">
+.search-form {
+	margin-bottom: 16px;
+
+	&__buttons {
+		display: inline-flex;
+		margin-left: 8px;
+	}
+}
+</style>
+```
+
+## 组件实现要求
+
+1. 单一职责原则，一个组件只负责一个功能
+2. 提供完整的类型定义，包括props、emits和expose
+3. 为props提供合理的默认值
+4. 组件应具有良好的自适应性和可定制性
+5. 通过插槽提供灵活的内容定制
+6. 样式使用scoped或CSS模块，避免污染全局
+
+## 组件文档注释
+
+每个组件应在顶部添加详细注释：
+
+```typescript
+/**
+ * @description 搜索表单组件，用于数据筛选
+ * @author 作者名
+ * @props {Object} model - 表单数据对象
+ * @props {String} searchText - 搜索按钮文本
+ * @props {String} resetText - 重置按钮文本
+ * @props {Boolean} immediate - 重置后是否立即触发搜索
+ * @emits {search} - 搜索事件，参数为表单数据
+ * @emits {reset} - 重置事件
+ * @slots default - 默认插槽，放置表单控件
+ * @slots buttons - 按钮区插槽，用于添加自定义按钮
+ * @example
+ * <SearchForm :model="searchForm" @search="onSearch">
+ *   <el-form-item label="关键词" prop="keyword">
+ *     <el-input v-model="searchForm.keyword" placeholder="请输入关键词" />
+ *   </el-form-item>
+ * </SearchForm>
+ */
+```
+
+## 样式规范
+
+1. 使用`scoped`特性限制样式作用域
+2. 采用BEM命名规范：block\_\_element--modifier
+3. 使用SCSS预处理器管理样式变量和嵌套
+4. 组件样式应支持主题定制
+5. 避免使用!important

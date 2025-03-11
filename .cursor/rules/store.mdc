@@ -1,0 +1,132 @@
+---
+description: Store模块编码规则
+globs: src/stores/**/*
+---
+# Store模块编码规则
+
+## 文件结构
+
+- 所有Pinia Store定义在`src/stores/modules`目录下
+- 在`src/stores/index.ts`中统一导出Pinia实例和所有store
+- 按业务功能或实体类型进行分类
+
+## 命名规范
+
+- Store文件名使用小写字母，采用camelCase命名法
+- Store ID采用camelCase命名法
+- 使用`useXxxStore`作为store的hook名称
+- 对外暴露的辅助函数使用`useXxxStoreWithOut`命名
+
+## 代码规范
+
+- 使用`defineStore`函数定义store
+- 合理划分state、getters和actions
+- 为每个store添加类型定义
+- 相关状态管理逻辑应组织在同一个文件中
+
+## 示例代码
+
+```typescript
+import { defineStore } from 'pinia'
+import { localMng } from '@/utils/storage-mng'
+import { TokenName } from '@/configs/const'
+import request from '@/utils/request'
+import router from '@/router'
+import type { IObject, ILoginParams, ILoginResponse } from '@/models/common'
+import store from '@/stores'
+
+// 定义状态类型
+interface AppState {
+	count: number
+	isCollapse: boolean
+	token: string
+	userInfo: IObject
+	menuList: any[]
+	permissions: string[]
+}
+
+// 定义Store
+export const useAppStore = defineStore('app', {
+	state: (): AppState => ({
+		count: 0,
+		isCollapse: false, // 是否收起菜单
+		token: '',
+		userInfo: {}, // 用户信息
+		menuList: [], // 菜单列表
+		permissions: ['home:button'], // 权限列表
+	}),
+	getters: {
+		doubleCount: state => state.count * 2,
+		// 使用this访问其他getter
+		quadrupleCount(): number {
+			return this.doubleCount * 2
+		},
+	},
+	actions: {
+		// 简单action
+		increment() {
+			this.count++
+			window.$message.success('+1')
+		},
+		// 异步action
+		async login(loginParams: ILoginParams) {
+			try {
+				const { data } = await request.post<ILoginResponse>('/sys/login', loginParams)
+				this.token = data.token
+				localMng.set(TokenName, data.token)
+				return Promise.resolve(data)
+			} catch (error) {
+				return Promise.reject(error)
+			}
+		},
+		// 退出登录
+		logout() {
+			this.token = ''
+			this.userInfo = {}
+			this.permissions = []
+			localMng.remove(TokenName)
+			router.push('/login')
+		},
+	},
+	// 数据持久化配置
+	persist: {
+		key: 'app-store',
+		storage: localStorage,
+		paths: ['token', 'userInfo', 'permissions'],
+	},
+})
+
+// 在组件外使用
+export function useAppStoreWithOut() {
+	return useAppStore(store)
+}
+```
+
+## Store实现要求
+
+1. 清晰定义state类型接口
+2. state初始值应该是完整的数据结构
+3. 提供必要的getters用于派生状态
+4. 异步操作和副作用应在actions中处理
+5. actions应返回Promise以支持链式调用
+6. 提供辅助函数用于在组件外使用store
+
+## 状态持久化配置
+
+使用`pinia-plugin-persistedstate`实现持久化：
+
+```typescript
+persist: {
+	key: 'store-name',
+	storage: localStorage, // 或 sessionStorage
+	paths: ['需要持久化的state路径'],
+}
+```
+
+## Store使用规范
+
+1. 在组件中使用`useXxxStore()`获取store实例
+2. 在非组件文件中使用`useXxxStoreWithOut()`获取store实例
+3. 使用结构赋值获取state时，需使用`storeToRefs`保持响应性
+4. 禁止在组件中直接修改state，应通过actions修改
+5. 复杂业务逻辑应在actions中实现，而不是在组件中

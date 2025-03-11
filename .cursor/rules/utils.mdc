@@ -1,0 +1,235 @@
+---
+description: Utils模块编码规则
+globs: src/utils/**/*
+---
+# Utils模块编码规则
+
+## 文件结构
+
+- 所有工具函数应放在`src/utils`目录下
+- 按功能类型进行分类，每类工具函数一个独立文件
+- 通用工具函数放在`index.ts`中
+
+## 命名规范
+
+- 文件名使用小写字母，采用kebab-case命名法
+- 函数名使用camelCase命名法
+- 工具类使用PascalCase命名法
+- 常量使用大写字母，单词间用下划线连接
+
+## 代码规范
+
+- 为每个函数添加详细的JSDoc注释
+- 使用TypeScript类型定义参数和返回值
+- 一个函数只做一件事，遵循单一职责原则
+- 公共函数应进行参数校验和异常处理
+
+## 示例代码
+
+```typescript
+/**
+ * 格式化日期
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @param {string} [format='YYYY-MM-DD'] - 格式化模式
+ * @returns {string} 格式化后的日期字符串
+ * @example
+ * // 返回 "2023-01-15"
+ * formatDate(new Date(2023, 0, 15))
+ *
+ * // 返回 "2023/01/15 10:30"
+ * formatDate(new Date(2023, 0, 15, 10, 30), 'YYYY/MM/DD HH:mm')
+ */
+export function formatDate(date: Date | string | number, format: string = 'YYYY-MM-DD'): string {
+	const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date
+
+	if (!(d instanceof Date) || isNaN(d.getTime())) {
+		console.warn('Invalid date provided to formatDate')
+		return ''
+	}
+
+	const year = d.getFullYear()
+	const month = d.getMonth() + 1
+	const day = d.getDate()
+	const hours = d.getHours()
+	const minutes = d.getMinutes()
+	const seconds = d.getSeconds()
+
+	const padZero = (num: number): string => num.toString().padStart(2, '0')
+
+	return format
+		.replace('YYYY', year.toString())
+		.replace('MM', padZero(month))
+		.replace('DD', padZero(day))
+		.replace('HH', padZero(hours))
+		.replace('mm', padZero(minutes))
+		.replace('ss', padZero(seconds))
+}
+
+/**
+ * 深拷贝对象
+ * @param {T} obj - 要拷贝的对象
+ * @returns {T} 深拷贝后的对象
+ */
+export function deepClone<T>(obj: T): T {
+	if (obj === null || typeof obj !== 'object') {
+		return obj
+	}
+
+	if (obj instanceof Date) {
+		return new Date(obj.getTime()) as unknown as T
+	}
+
+	if (obj instanceof Array) {
+		return obj.map(item => deepClone(item)) as unknown as T
+	}
+
+	if (obj instanceof Object) {
+		const copy = {} as Record<string, any>
+		Object.keys(obj).forEach(key => {
+			copy[key] = deepClone((obj as Record<string, any>)[key])
+		})
+		return copy as T
+	}
+
+	return obj
+}
+```
+
+## 工具函数实现要求
+
+1. 每个函数前添加JSDoc注释，包含参数说明、返回值和示例
+2. 函数应当纯净，避免副作用
+3. 提供完整的TypeScript类型定义
+4. 进行必要的参数验证和异常处理
+5. 对复杂逻辑添加必要的代码注释
+6. 注重性能优化，避免不必要的计算
+
+## 特殊工具模块
+
+### request.ts - HTTP请求工具
+
+```typescript
+import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { localMng } from './storage-mng'
+import { TokenName } from '@/configs/const'
+
+// 创建axios实例
+const instance: AxiosInstance = axios.create({
+	baseURL: import.meta.env.VITE_API_BASE_URL,
+	timeout: 10000,
+	headers: {
+		'Content-Type': 'application/json',
+	},
+})
+
+// 请求拦截器
+instance.interceptors.request.use(
+	config => {
+		const token = localMng.get(TokenName)
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`
+		}
+		return config
+	},
+	error => {
+		return Promise.reject(error)
+	}
+)
+
+// 响应拦截器
+instance.interceptors.response.use(
+	response => {
+		const res = response.data
+		if (res.code !== 200) {
+			// 处理业务错误
+			if (res.code === 401) {
+				// 处理未授权
+				localMng.remove(TokenName)
+				window.location.href = '/login'
+			}
+			return Promise.reject(new Error(res.message || 'Error'))
+		}
+		return res
+	},
+	error => {
+		// 处理HTTP错误
+		return Promise.reject(error)
+	}
+)
+
+// 封装GET请求
+function get<T = any>(url: string, params?: any, config?: AxiosRequestConfig): Promise<T> {
+	return instance.get(url, { params, ...config })
+}
+
+// 封装POST请求
+function post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+	return instance.post(url, data, config)
+}
+
+// 封装其他HTTP方法...
+
+export default {
+	get,
+	post,
+	// 其他HTTP方法...
+	instance,
+}
+```
+
+### storage-mng.ts - 本地存储工具
+
+```typescript
+/**
+ * localStorage管理工具
+ */
+export const localMng = {
+	/**
+	 * 设置localStorage
+	 * @param {string} key - 键名
+	 * @param {any} value - 值
+	 */
+	set(key: string, value: any): void {
+		if (value === undefined) {
+			return
+		}
+		localStorage.setItem(key, JSON.stringify(value))
+	},
+
+	/**
+	 * 获取localStorage
+	 * @param {string} key - 键名
+	 * @returns {any} 存储的值
+	 */
+	get(key: string): any {
+		if (!key) {
+			return null
+		}
+		try {
+			const value = localStorage.getItem(key)
+			return value ? JSON.parse(value) : null
+		} catch (error) {
+			return null
+		}
+	},
+
+	/**
+	 * 移除localStorage
+	 * @param {string} key - 键名
+	 */
+	remove(key: string): void {
+		if (!key) {
+			return
+		}
+		localStorage.removeItem(key)
+	},
+
+	/**
+	 * 清空所有localStorage
+	 */
+	clear(): void {
+		localStorage.clear()
+	},
+}
+```
