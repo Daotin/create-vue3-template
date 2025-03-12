@@ -1,3 +1,6 @@
+import type { ElForm } from 'element-plus'
+export type ElFormInstance = InstanceType<typeof ElForm>
+
 export interface IObject {
 	[x: string]: any
 }

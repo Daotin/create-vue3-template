@@ -42,7 +42,14 @@ export default defineConfig(({ mode }) => {
 			vue(),
 			vueJsx(),
 			AutoImport({
-				imports: ['vue'], // 自动导入vue3 API
+				// 定义自动导入的模块
+				imports: ['vue', 'vue-router', 'pinia'],
+				// // 处理eslint
+				// eslintrc: {
+				// 	enabled: true,
+				// 	filepath: '.eslintrc-auto-import.json',
+				// 	globalsPropValue: true,
+				// },
 				resolvers: [
 					ElementPlusResolver(),
 					// 自动导入图标组件

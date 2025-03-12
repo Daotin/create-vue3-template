@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import MenuItem from './MenuItem.vue'
 import { useAppStore } from '@/stores'
-import { useRoute } from 'vue-router'
 import type { IObject } from '@/models/common'
 
 const appStore = useAppStore()
@@ -20,12 +19,14 @@ function handleOpen() {}
 function handleClose() {}
 function handleSelectMenu(url: string) {
 	console.log(url)
-	// const url = appStore.menuIdUrl[menuId]
-	// if (url) {
-	// 	router.push(url)
-	// } else {
-	// 	router.push('/error/not-found')
-	// }
+	/*
+	 * const url = appStore.menuIdUrl[menuId]
+	 * if (url) {
+	 * 	router.push(url)
+	 * } else {
+	 * 	router.push('/error/not-found')
+	 * }
+	 */
 }
 onMounted(() => {})
 </script>

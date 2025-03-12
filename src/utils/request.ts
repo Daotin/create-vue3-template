@@ -47,10 +47,12 @@ class Request {
 			(config: InternalAxiosRequestConfig) => {
 				// const { checkApiPermission } = usePermission()
 				config.cancelToken = new axios.CancelToken(function executor(c) {
-					// if (!checkApiPermission(config.url)) {
-					//   c(config.url + '没有权限')
-					//   router.push('/error/forbidden')
-					// }
+					/*
+					 * if (!checkApiPermission(config.url)) {
+					 *   c(config.url + '没有权限')
+					 *   router.push('/error/forbidden')
+					 * }
+					 */
 				})
 				return config
 			},
@@ -149,18 +151,18 @@ class Request {
 	 * 添加了泛型参数 T 用于定义返回数据的类型，默认为 any。调用时可以指定具体的返回类型，如：get<UserInfo>('/api/user')
 	 * 添加了泛型参数 D 用于定义请求参数的类型，默认为 Record<string, any>，即一个包含任意字符串键值对的类型。
 	 * 调用时可以指定具体的请求参数类型，如：get<UserInfo, { id: number }>('/api/user', { id: 1 })
-   * 
-   * 使用示例：
-   * interface UserInfo {
-      id: number;
-      name: string;
-    }
-
-    // 调用方式
-    const response = await request.get<UserInfo>('/api/user');
-    // response 类型为 IBaseResponse<UserInfo>
-    // 可以通过 response.body 获取具体数据
-    const userInfo = response.body;
+	 *
+	 * 使用示例：
+	 * interface UserInfo {
+	 *   id: number;
+	 *   name: string;
+	 * }
+	 *
+	 * // 调用方式
+	 * const response = await request.get<UserInfo>('/api/user');
+	 * // response 类型为 IBaseResponse<UserInfo>
+	 * // 可以通过 response.body 获取具体数据
+	 * const userInfo = response.body;
 	 */
 	public get = <T = any, D extends Record<string, any> = Record<string, any>>(
 		url: string,

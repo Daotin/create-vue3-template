@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { FormRules } from 'element-plus'
+import type { FormRules, ElForm } from 'element-plus'
 import { useAppStore } from '@/stores'
 import LoginBg from '@/assets/images/login/login-bg.jpg?url'
 import { waitForImageLoad } from '@/utils'
-import type { ILoginParams } from '@/models/common'
+import type { ILoginParams, ElFormInstance } from '@/models/common'
 const appStore = useAppStore()
 
 const formData = reactive<ILoginParams>({
@@ -16,11 +16,11 @@ const rules = reactive<FormRules>({
 	password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 })
 
-const formRef = ref()
+const formRef = ref<ElFormInstance>()
 const submitLoading = ref(false)
 async function handleLogin() {
 	try {
-		await formRef.value.validate()
+		await formRef.value?.validate()
 		submitLoading.value = true
 		await appStore.login(formData)
 		window.$message.success('登录成功')

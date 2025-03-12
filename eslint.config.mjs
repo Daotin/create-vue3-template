@@ -214,6 +214,7 @@ export default [
 			'build/**',
 			'node_modules/**',
 			'coverage/**',
+			'types/**',
 
 			// 日志文件
 			'logs/**',
