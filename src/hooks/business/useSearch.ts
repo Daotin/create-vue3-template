@@ -5,8 +5,6 @@ import { isEmpty } from '@/utils/index'
 
 type ElFormInstance = InstanceType<typeof ElForm>
 
-interface IResult {}
-
 /**
  * 通用搜索
  * 模式一：loadListFn 外部传加载方法
@@ -77,9 +75,8 @@ const useSearch = <T>(options: ISearchOption) => {
 					}
 				})
 			}
-			let body = await loadListApi(params)
+			const body = await loadListApi(params)
 			const { totalElements, content = [], number } = body
-			console.log(content)
 			tableData.value = content
 			total.value = totalElements
 			page.value = number

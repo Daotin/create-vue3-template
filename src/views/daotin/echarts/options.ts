@@ -236,7 +236,7 @@ export const options = [
 			padding: [0, 50, 0, 0], // 图例的内边距
 			formatter: function (name) {
 				// 图例名称的格式化
-				let curr = data2[name]
+				const curr = data2[name]
 				return `{a|${name}} {b|${((curr / 106) * 100).toFixed(2)}%} {c|${curr}个}`
 			},
 			textStyle: {
@@ -454,18 +454,18 @@ export const options = [
 			extraCssText: 'border-radius: 8px;',
 			formatter: function (params) {
 				// console.log('params==>', params)
-				var tal = 0
+				let tal = 0
 
 				params.forEach(function (item) {
 					tal += Number(item.value)
 				})
-				var result = /*html*/ `
+				let result = /*html*/ `
             <div style="margin-bottom: 6px; width: 200px;">
               <div style="margin-bottom: 6px;white-space: normal;word-wrap: break-word;word-break: break-all;">${params[0].axisValueLabel}</div>
             </div>` // 当前的轴标签
 
 				params.forEach(function (item) {
-					var color = item.color
+					const color = item.color
 					result += /*html*/ `
               <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
                   <span>

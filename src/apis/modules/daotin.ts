@@ -21,7 +21,7 @@ export const apiDaotin2 = async () => {
 export const apiDaotin3 = async () => {
 	const res = await request.post('/daotin3')
 	const body = res.body || []
-	let bodyWeb = [] as any
+	const bodyWeb = [] as any
 
 	body.forEach(item => {
 		bodyWeb.push({
@@ -45,10 +45,10 @@ export const apiDaotin3 = async () => {
 
 // 分页列表接口
 export const apiDaotin4 = async data => {
-	let params = data
+	const params = data
 	const res = await request.post('/daotin4', params)
 	const { content = [] } = res.body
-	let contentWeb = [] as any
+	const contentWeb = [] as any
 
 	content.forEach(item => {
 		contentWeb.push({

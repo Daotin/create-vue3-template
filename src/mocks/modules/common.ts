@@ -61,6 +61,19 @@ const mockGetMenuList = () => {
 					},
 				],
 			},
+			{
+				id: '4',
+				name: '系统管理',
+				icon: 'avatar',
+				url: '',
+				children: [
+					{
+						id: '4-1',
+						name: '用户管理',
+						url: '/system/user',
+					},
+				],
+			},
 		],
 	})
 }

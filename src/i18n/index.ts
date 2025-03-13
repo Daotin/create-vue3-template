@@ -2,7 +2,7 @@ import { createI18n } from "vue-i18n"
 import defaultLang from '@/i18n/zh-CN.json';
 // import defaultLang from '@/i18n/en-US.json';
 
-let defaultLocale = 'zh-CN';
+const defaultLocale = 'zh-CN';
 // const defaultLocale = 'en-US';
 
 // let defaultMessages = defaultLang;

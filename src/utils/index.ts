@@ -24,7 +24,7 @@ export const checkPermission = (code?: string | string[]) => {
  */
 export function waitForImageLoad(url: string) {
 	return new Promise((request, inject) => {
-		var img = new Image()
+		const img = new Image()
 		img.src = url
 		img.addEventListener('load', function () {
 			request(url)
@@ -124,7 +124,7 @@ export const enumMng = <T extends EnumModel>(data: Array<T>): EnumResult<T> => {
  */
 export const isSetType = (fileName: string, type: string | Array<string>) => {
 	if (typeof fileName !== 'string') return false
-	let name = fileName.toLowerCase()
+	const name = fileName.toLowerCase()
 	if (Array.isArray(type)) {
 		const isFilterArr = type.filter(item => {
 			return name.endsWith(item)

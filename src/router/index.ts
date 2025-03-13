@@ -46,6 +46,7 @@ const modules = import.meta.glob('./modules/**/*.ts', { eager: true })
 const moduleRoutes: RouteRecordRaw[] = []
 Object.keys(modules).forEach(key => {
 	const mod = modules[key] as { default: RouteRecordRaw[] }
+	console.log('route key', key, mod)
 	moduleRoutes.push(...mod.default)
 })
 // 需要鉴权的界面

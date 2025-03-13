@@ -15,7 +15,7 @@ interface IProps {
 	page: number
 	size: number
 	showCheckBox: boolean
-	rowClassName?: Function
+	rowClassName?: (row: any) => string
 	layout?: string
 	prevText?: string
 	nextText?: string
@@ -46,7 +46,7 @@ const renderList = computed(() => {
 // 匹配"2019-01-01 12:00:00" 时间格式的正则表达式
 const dateRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
 
-const renderTableFiled = (row: Object, config: IColumnConfig) => {
+const renderTableFiled = (row: object, config: IColumnConfig) => {
 	const { formatter, key } = config
 	const initValue = row[key]
 	if (!formatter) return initValue
@@ -95,9 +95,10 @@ const handleCurrentChange = (val: number) => {
 		v-bind="$attrs"
 	>
 		<el-table-column type="selection" width="55" v-if="showCheckBox" />
-		<template v-for="item in renderList" v-show="item.visible ? item.visible() : true">
+		<template v-for="item in renderList">
 			<slot :name="`table-${item.key}`">
 				<el-table-column
+					v-show="item.visible ? item.visible() : true"
 					:prop="item.key"
 					:label="tableConfig.i18nDisable ? item.value : $t(item.value || '')"
 					:width="item.width || 'auto'"

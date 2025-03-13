@@ -82,6 +82,15 @@ export default [
 			// 禁止使用嵌套的三目运算符，提高代码可读性
 			'no-nested-ternary': 'warn',
 
+			// 禁止未使用的表达式
+			'@typescript-eslint/no-unused-expressions': 'off',
+
+			// 禁止使用空对象类型
+			'@typescript-eslint/no-empty-object-type': 'off',
+
+			// 禁止使用不安全的函数类型
+			'@typescript-eslint/no-unsafe-function-type': 'off',
+
 			/*
 			 * 注释规则配置
 			 * 要求注释符号 // 后必须跟随至少一个空格
@@ -169,6 +178,12 @@ export default [
 
 			// 禁用组件名必须多个单词的规则
 			'vue/multi-word-component-names': 'off',
+
+			// 禁止使用无意义的模板属性
+			'vue/no-useless-template-attributes': 'off',
+
+			// 禁止使用无效的 v-show 指令
+			'vue/valid-v-show': 'off',
 		},
 	},
 
