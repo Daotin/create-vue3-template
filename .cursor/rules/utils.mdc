@@ -2,6 +2,7 @@
 description: Utils模块编码规则
 globs: src/utils/**/*
 ---
+
 # Utils模块编码规则
 
 ## 文件结构

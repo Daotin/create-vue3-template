@@ -2,6 +2,7 @@
 description: Store模块编码规则
 globs: src/stores/**/*
 ---
+
 # Store模块编码规则
 
 ## 文件结构

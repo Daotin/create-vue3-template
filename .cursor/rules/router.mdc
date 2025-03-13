@@ -2,6 +2,7 @@
 description: Router模块编码规则
 globs: src/router/**/*
 ---
+
 # Router模块编码规则
 
 ## 文件结构

@@ -2,36 +2,31 @@
 description: Components模块编码规则
 globs: src/components/**/*
 ---
+
 # Components模块编码规则
 
 ## 文件结构
 
 - 所有通用组件应放在`src/components`目录下
-- 按组件功能或类型进行分类，创建子目录
-- 每个组件一个独立的文件夹，包含组件文件和相关资源
+- 按组件功能或类型进行分类，创建子目录，比如基础组件在`base`子目录，业务组件在`business`子目录
+- 每个组件是一个单独的文件，如果需要包含相关资源，则是一个独立的文件夹，包含组件文件和相关资源
 
 ## 命名规范
 
 - 组件文件夹和文件名使用PascalCase命名法
 - 组件名称使用PascalCase命名法
-- 私有组件文件名以下划线开头
 - 基础组件可使用`Base`前缀，如`BaseButton`
 
 ## 目录结构示例
 
 ```
 src/components/
-├── Form/
-│   ├── SearchForm.vue       # 搜索表单组件
-│   └── FormItem.vue         # 表单项组件
-├── Table/
-│   ├── DataTable.vue        # 数据表格组件
-│   └── TableColumn.vue      # 表格列组件
-├── Dialog/
-│   └── ConfirmDialog.vue    # 确认对话框组件
-└── common/
-    ├── Icon.vue             # 图标组件
-    └── _utils.ts            # 私有工具函数
+├── base/
+│   ├── BaseIcon.vue       # icon图标组件
+│   └── BaseSearchButton.vue  # 表单搜索按钮组件
+├── business
+│   ├── TyTable.vue       # 表格组件
+│   └── TySearchForm.vue  # 搜索组件
 ```
 
 ## 代码规范
@@ -122,11 +117,11 @@ defineExpose({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .search-form {
 	margin-bottom: 16px;
 
-	&__buttons {
+	.search-form__buttons {
 		display: inline-flex;
 		margin-left: 8px;
 	}
@@ -150,7 +145,7 @@ defineExpose({
 ```typescript
 /**
  * @description 搜索表单组件，用于数据筛选
- * @author 作者名
+ * @author Daotin
  * @props {Object} model - 表单数据对象
  * @props {String} searchText - 搜索按钮文本
  * @props {String} resetText - 重置按钮文本
@@ -171,7 +166,5 @@ defineExpose({
 ## 样式规范
 
 1. 使用`scoped`特性限制样式作用域
-2. 采用BEM命名规范：block\_\_element--modifier
-3. 使用SCSS预处理器管理样式变量和嵌套
-4. 组件样式应支持主题定制
-5. 避免使用!important
+2. 使用LESS预处理器管理样式变量和嵌套
+3. 避免使用!important

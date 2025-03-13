@@ -1,6 +1,6 @@
 ---
 description: API模块编码规则
-globs: src/apis/**/*.ts
+globs: src/apis/**/*
 ---
 
 # API模块编码规则
