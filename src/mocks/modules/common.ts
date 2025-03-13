@@ -40,39 +40,26 @@ const mockGetMenuList = () => {
 			},
 			{
 				id: '3',
-				name: '菜单一',
+				name: '业务模块',
 				icon: 'avatar',
 				url: '',
 				children: [
 					{
 						id: '3-1',
-						name: '菜单一-1',
-						url: '/',
+						name: '搜索表单',
+						url: '/daotin/form',
 					},
 					{
 						id: '3-2',
-						name: '菜单一-2',
-						url: '',
+						name: '分片上传',
+						url: '/daotin/upload',
+					},
+					{
+						id: '3-3',
+						name: 'echarts案例',
+						url: '/daotin/echarts',
 					},
 				],
-			},
-			{
-				id: '4',
-				name: 'TySearchForm',
-				icon: 'avatar',
-				url: '/daotin/form',
-			},
-			{
-				id: '5',
-				name: '分片上传',
-				icon: 'avatar',
-				url: '/daotin/upload',
-			},
-			{
-				id: '6',
-				name: 'echarts案例',
-				icon: 'avatar',
-				url: '/daotin/echarts',
 			},
 		],
 	})

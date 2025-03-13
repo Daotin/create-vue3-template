@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import enums from '@/enums'
 
-console.log('⭐==>', enums.common.enumState.enabled)
+// console.log('⭐==>', enums.common.enumState.enabled)
 </script>
 
 <template>

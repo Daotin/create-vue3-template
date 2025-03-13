@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Search, RefreshRight, Setting } from '@element-plus/icons-vue'
 import type { ITableConfig } from '@/models/table'
 
 interface IProps {
@@ -31,14 +29,28 @@ const showAfter = 1000
 <template>
 	<div class="mr-4">
 		<el-tooltip :content="$t('page.product.search')" :show-after="showAfter">
-			<el-button type="primary" :icon="Search" native-type="submit" @click="handleSearch" class="search-button">
+			<el-button type="primary" native-type="submit" @click="handleSearch" class="search-button">
+				<template #icon>
+					<icon-ep-search />
+				</template>
+				<span>搜索</span>
 			</el-button>
 		</el-tooltip>
 		<el-tooltip :content="$t('page.public.reset')" :show-after="showAfter">
-			<el-button :icon="RefreshRight" @click="handleReset" class="search-button"> </el-button>
+			<el-button @click="handleReset" class="search-button">
+				<template #icon>
+					<icon-ep-refresh />
+				</template>
+				<span>重置</span>
+			</el-button>
 		</el-tooltip>
 		<el-tooltip :content="$t('page.public.configList')" v-if="tableCode" :show-after="showAfter">
-			<el-button :icon="Setting" @click="handleShowConfig" class="search-button"> </el-button>
+			<el-button @click="handleShowConfig" class="search-button">
+				<template #icon>
+					<icon-ep-setting />
+				</template>
+				<span>配置</span>
+			</el-button>
 		</el-tooltip>
 	</div>
 </template>

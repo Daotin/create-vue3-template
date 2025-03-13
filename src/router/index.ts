@@ -1,11 +1,12 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-
+import { useRoute } from 'vue-router'
 import { localMng } from '@/utils/storage-mng'
 import { TokenName } from '@/configs/const'
-import { useAppStoreWithOut } from '@/stores'
+import { useAppStoreWithOut, useBreadcrumbStoreWithOut } from '@/stores'
 
+const route = useRoute()
 // Configure nprogress
 NProgress.configure({
 	showSpinner: false, // 是否显示加载动画
@@ -50,8 +51,9 @@ Object.keys(modules).forEach(key => {
 // 需要鉴权的界面
 const innerPaths: RouteRecordRaw[] = [
 	{
-		name: 'Portal',
+		name: '首页',
 		path: '/portal',
+		redirect: '/home',
 		component: () => import('@/layouts/index.vue'),
 		children: [...moduleRoutes],
 	},
@@ -83,10 +85,17 @@ router.beforeEach(async to => {
 	NProgress.start()
 
 	const appStore = useAppStoreWithOut()
+	const breadcrumbStore = useBreadcrumbStoreWithOut()
+
 	const title = (to.meta && (to.meta.title as string)) || ''
 	if (title) {
 		document.title = title
 	}
+
+	// 设置面包屑数据
+	breadcrumbStore.setBreadcrumb(to.matched)
+	// console.log('to.matched', to.matched)
+
 	// 外部界面，直接访问
 	const outerPathNames = outerPaths.map(item => item.path)
 	if (outerPathNames.includes(to.path)) {

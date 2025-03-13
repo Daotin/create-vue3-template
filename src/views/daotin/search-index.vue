@@ -13,6 +13,9 @@ import { enumOptionType, enumTaskPublishScope, enumDeviceStatus } from '@/config
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+const route = useRoute()
+console.log('route.matched', route.matched)
+
 // TODO daotin：搜索 xxx
 /********************************************************************
  * 表单搜索区域
