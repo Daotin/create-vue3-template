@@ -186,7 +186,7 @@ export default [
 			'vue/valid-v-show': 'off',
 
 			// 禁止使用已弃用的 v-on 原生修饰符，如@submit.native.prevent
-			'vue/no-deprecated-v-on-native-modifier': 'off',
+			'vue/no-deprecated-v-on-native-modifier': 'warn',
 		},
 	},
 

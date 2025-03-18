@@ -185,7 +185,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<el-form class="search-con" :inline="true" :model="querys" :ref="searchFormRef" @submit.native.prevent>
+	<el-form class="search-con" :inline="true" :model="querys" :ref="searchFormRef" @submit.prevent>
 		<template v-for="(item, index) in searchConfig">
 			<template v-if="!isFold || index < searchCount">
 				<slot :name="`search-${item.prop}`">

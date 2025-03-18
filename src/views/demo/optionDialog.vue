@@ -91,7 +91,7 @@ async function handleSubmit() {
 			:ref="option.formRef"
 			label-position="top"
 			:validate-on-rule-change="false"
-			@submit.native.prevent
+			@submit.prevent
 		>
 			<el-form-item label="产品名称" prop="productName">
 				<!-- TODO daotin: 输入长度限制 -->

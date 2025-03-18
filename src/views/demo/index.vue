@@ -79,7 +79,7 @@ function disabledDate(time: Date) {
 	let disableFlag1 = time.getTime() > new Date().getTime()
 	let disableFlag2 = pickDay.value
 		? // ? time.getTime() < new Date(pickDay.value).getTime() - 30 * 24 * 60 * 60 * 1000
-		  time.getTime() < dayjs(pickDay.value).subtract(30, 'days')
+			time.getTime() < dayjs(pickDay.value).subtract(30, 'days')
 		: false
 	// console.log('disabledDate==>', disableFlag1, disableFlag2)
 	return disableFlag1 || disableFlag2
@@ -170,7 +170,7 @@ onMounted(async () => {
 <template>
 	<div class="page-content xxx">
 		<div>el-form模板</div>
-		<el-form class="search-con" inline :model="querys" :ref="search.formRef" @submit.native.prevent>
+		<el-form class="search-con" inline :model="querys" :ref="search.formRef" @submit.prevent>
 			<el-form-item prop="productName">
 				<el-input v-model="querys.productName" placeholder="产品名称" clearable></el-input>
 			</el-form-item>

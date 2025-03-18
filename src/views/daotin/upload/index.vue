@@ -260,7 +260,7 @@ function clearUploadProgress() {
 		label-position="top"
 		label-width="120px"
 		:validate-on-rule-change="false"
-		@submit.native.prevent
+		@submit.prevent
 	>
 		<el-form-item label="el-upload上传文件" prop="fileList">
 			<el-upload
