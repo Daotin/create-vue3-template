@@ -9,11 +9,11 @@
 		"prepare": "husky install",
 		"type-check": "vue-tsc --noEmit",
 		"changelog": "conventional-changelog -p custom-config -i CHANGELOG.md -s -r 0  -n ./changelog.config.js",
-		"lint": "eslint --cache --ext .vue,.ts,.tsx,.js,.jsx,.json --quiet src/",
-		"lint:fix": "eslint --cache --ext .vue,.ts,.tsx,.js,.jsx,.json --quiet src/ --fix",
-		"stylelint": "stylelint \"src/**/*.{css,less,vue}\" --cache",
-		"stylelint:fix": "stylelint \"src/**/*.{css,less,vue}\" --cache --fix",
-		"lint-staged": "lint-staged"
+		"lint-staged": "lint-staged",
+		"lint": "eslint --cache --cache-location node_modules/.cache/.eslintcache --ext .vue,.ts,.tsx,.js,.jsx,.json --quiet src/",
+		"lint:fix": "eslint --cache --cache-location node_modules/.cache/.eslintcache --ext .vue,.ts,.tsx,.js,.jsx,.json --quiet src/ --fix",
+		"stylelint": "stylelint \"src/**/*.{css,less,vue}\" --cache --cache-location node_modules/.cache/.stylelintcache",
+		"stylelint:fix": "stylelint \"src/**/*.{css,less,vue}\" --cache --cache-location node_modules/.cache/.stylelintcache --fix"
 	},
 	"engines": {
 		"node": ">=16.0.0",
@@ -65,7 +65,7 @@
 		"stylelint-less": "^3.0.1",
 		"stylelint-order": "^6.0.4",
 		"tailwindcss": "^3.3.2",
-		"typescript": "~4.7.4",
+		"typescript": "~4.9.5",
 		"typescript-eslint": "^8.26.0",
 		"unplugin-auto-import": "^0.12.0",
 		"unplugin-element-plus": "^0.4.1",

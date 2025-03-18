@@ -21,10 +21,6 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-	{
-		cache: true,
-		cacheLocation: './node_modules/.cache/.eslintcache', // 放到node_modules/.cache目录下
-	},
 	// 匹配所有的 JS、TS 和 Vue 文件
 	{ files: ['**/*.{js,mjs,cjs,ts,vue}'] },
 	// 配置语言选项
@@ -188,6 +184,9 @@ export default [
 
 			// 禁止使用无效的 v-show 指令
 			'vue/valid-v-show': 'off',
+
+			// 禁止使用已弃用的 v-on 原生修饰符，如@submit.native.prevent
+			'vue/no-deprecated-v-on-native-modifier': 'off',
 		},
 	},
 
