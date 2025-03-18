@@ -38,6 +38,18 @@ export default defineConfig(({ mode }) => {
 			'process.env': { ...process.env, ...env },
 			__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false, // 控制生产环境是否显示更详细的 SSR Hydration 不匹配信息。
 		},
+		build: {
+			// chunkSizeWarningLimit: 1500, // 设置chunk警告的大小限制（默认500kb）
+			rollupOptions: {
+				output: {
+					manualChunks: {
+						'element-plus': ['element-plus'],
+						vendor: ['vue', 'vue-router', 'pinia'],
+						echarts: ['echarts'],
+					},
+				},
+			},
+		},
 		plugins: [
 			vue(),
 			vueJsx(),

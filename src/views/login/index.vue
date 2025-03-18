@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormRules, ElForm } from 'element-plus'
 import { useAppStore } from '@/stores'
-import LoginBg from '@/assets/images/login/login-bg.jpg?url'
+import LoginBg from '@/assets/images/login/login-bg.webp?url'
 import { waitForImageLoad } from '@/utils'
 import type { ILoginParams, ElFormInstance } from '@/models/common'
 const appStore = useAppStore()
