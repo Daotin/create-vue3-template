@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import enums from '@/enums'
+// import enums from '@/enums'
 
 // console.log('⭐==>', enums.common.enumState.enabled)
 </script>
@@ -12,4 +12,13 @@ import enums from '@/enums'
 	<icon-ep-delete class="custom-icon" style="color: red; font-size: 24px" />
 
 	<BaseIcon name="avatar" size="24" />
+
+	<hr />
+
+	<BaseDot />
+	<BaseDot type="success" size="16" />
+	<BaseDot type="success" size="12" hollow />
+	<BaseDot type="success" size="8" color="red">
+		<span>测试</span>
+	</BaseDot>
 </template>

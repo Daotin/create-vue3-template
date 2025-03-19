@@ -17,7 +17,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 // 生产svg精灵图
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
-const path = require('path')
+import path from 'path'
 /**
  * path.resolve：解析一系列的路径成绝对路径
  * 示例：从 右向左 依次拼接。直到遇到第一个绝对路径形式的 path 才停止. 比如 path.resolve('/foo', '/bar', 'baz').
@@ -144,6 +144,38 @@ export default defineConfig(({ mode }) => {
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api/, ''),
 				},
+			},
+		},
+		test: {
+			// 启用类似 jest 的全局测试 API
+			globals: true,
+			// 使用 jsdom 环境
+			environment: 'jsdom',
+			// 支持tsx组件
+			transformMode: {
+				web: [/.[tj]sx$/],
+			},
+			// 配置测试覆盖率
+			coverage: {
+				provider: 'v8',
+				reporter: ['text', 'json', 'html'],
+				exclude: [
+					'node_modules/',
+					'dist/',
+					'**/*.d.ts',
+					'**/*.test.{js,ts}',
+					'**/*.spec.{js,ts}',
+					'**/*.config.{js,ts}',
+				],
+			},
+			// 修改测试文件匹配模式
+			include: ['__tests__/**/*.test.ts'],
+			exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
+			// 设置测试环境的根目录
+			root: '.',
+			// 添加路径别名配置
+			alias: {
+				'@': fileURLToPath(new URL('./src', import.meta.url)),
 			},
 		},
 	}

@@ -11,7 +11,7 @@ interface IProps {
 
 withDefaults(defineProps<IProps>(), {
 	type: 'info',
-	hollow: false,
+	hollow: false, // 默认空心
 })
 </script>
 

@@ -60,8 +60,8 @@ export interface EnumResult<T extends EnumModel> {
 	enums: Enums
 	[key: string]: any
 	[key: number]: any
-	getColor: (id: string) => string
-	getStatus: (id: string) => string | undefined
+	getColor: (id: string | number) => string
+	getStatus: (id: string | number) => string | undefined
 	getNameById: (id: string | number) => string | number
 	getNamesByIds: (ids: Array<string | number>) => Array<string | number>
 	getFormats: (idAlias: string, nameAlias: string) => any[]
@@ -89,7 +89,7 @@ export const enumMng = <T extends EnumModel>(data: Array<T>): EnumResult<T> => {
 		const row = data.find(item => item.id === id)
 		return row ? row.color! : ''
 	}
-	result.getStatus = (id: string) => {
+	result.getStatus = (id: string | number) => {
 		const row = data.find(item => item.id === id)
 		return row ? row.status : undefined
 	}
@@ -127,11 +127,11 @@ export const isSetType = (fileName: string, type: string | Array<string>) => {
 	const name = fileName.toLowerCase()
 	if (Array.isArray(type)) {
 		const isFilterArr = type.filter(item => {
-			return name.endsWith(item)
+			return name.endsWith(item.toLowerCase())
 		})
 		return isFilterArr.length > 0
 	} else {
-		return name.endsWith(type)
+		return name.endsWith(type.toLowerCase())
 	}
 }
 
