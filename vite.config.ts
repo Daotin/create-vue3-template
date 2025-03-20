@@ -3,6 +3,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import compression from 'vite-plugin-compression'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 // Element Plus按需引入
 import AutoImport from 'unplugin-auto-import/vite'
@@ -39,20 +41,144 @@ export default defineConfig(({ mode }) => {
 			__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false, // 控制生产环境是否显示更详细的 SSR Hydration 不匹配信息。
 		},
 		build: {
-			// chunkSizeWarningLimit: 1500, // 设置chunk警告的大小限制（默认500kb）
+			target: 'es2015',
+			minify: 'esbuild',
+			esbuild: {
+				drop: ['console', 'debugger'],
+			},
+			assetsInlineLimit: 4096, // 小于4kb的图片会被转为base64
+			cssCodeSplit: true, // 启用CSS代码拆分
+			cssMinify: true, // 压缩CSS
+			sourcemap: false, // 不生成sourcemap
+			reportCompressedSize: false, // 禁用压缩大小报告
+			chunkSizeWarningLimit: 500, // 提高警告门槛到500kb
 			rollupOptions: {
 				output: {
-					manualChunks: {
-						'element-plus': ['element-plus'],
-						vendor: ['vue', 'vue-router', 'pinia'],
-						echarts: ['echarts'],
-					},
-				},
-			},
+					// 分类输出
+					chunkFileNames: 'static/js/[name]-[hash].js',
+					entryFileNames: 'static/js/[name]-[hash].js',
+					assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+					// 将小于 30kb 的包合并
+					minifyInternalExports: true,
+					// 确保小包被合并
+					experimentalMinChunkSize: 30000, // 30kb
+					// 代码分割
+					manualChunks(id, { getModuleInfo }) {
+						// 获取模块信息
+						const moduleInfo = getModuleInfo(id)
+						if (!moduleInfo) return
+
+						// 将 node_modules 中的代码单独打包
+						if (id.includes('node_modules')) {
+							// element-plus 相关打包
+							if (id.includes('element-plus')) {
+								return 'element-plus'
+							}
+							if (id.includes('@element-plus')) {
+								return 'element-plus-icons'
+							}
+							// echarts 相关打包
+							if (id.includes('echarts') || id.includes('zrender')) {
+								return 'echarts'
+							}
+							// lodash 单独打包
+							if (id.includes('lodash-es')) {
+								return 'lodash'
+							}
+							// vue 相关打包
+							if (id.includes('vue') || id.includes('@vue')) {
+								return 'vue-vendor'
+							}
+							// 状态管理相关打包
+							if (id.includes('pinia') || id.includes('vuex')) {
+								return 'store-vendor'
+							}
+							// 工具库打包
+							if (id.includes('@vueuse') || id.includes('axios')) {
+								return 'utils-vendor'
+							}
+							// 剩余 node_modules 打包
+							return 'vendor'
+						}
+
+						// 将小模块合并到它们的引用者中
+						const importers = moduleInfo.importers
+						if (importers && importers.length === 1) {
+							const importer = importers[0]
+							const importerInfo = getModuleInfo(importer)
+							if (importerInfo && !importerInfo.isEntry) {
+								return null // 返回 null 使其合并到引用者的chunk中
+							}
+						}
+
+						// 将所有 Components 组件库集中打包
+						if (id.includes('src/components')) {
+							return 'components'
+						}
+						// 将所有 Utils 工具库集中打包
+						if (id.includes('src/utils')) {
+							return 'utils'
+						}
+					}
+				}
+			}
 		},
 		plugins: [
 			vue(),
 			vueJsx(),
+			// 图片压缩
+			ViteImageOptimizer({
+				test: /\.(jpe?g|png|gif|webp|svg)$/i,
+				include: undefined,
+				exclude: undefined,
+				includePublic: true,
+				logStats: true,
+				ansiColors: true,
+				svg: {
+					multipass: true,
+					plugins: [
+						{
+							name: 'preset-default',
+							params: {
+								overrides: {
+									cleanupNumericValues: false,
+									removeViewBox: false, // 不删除 viewBox 属性
+								},
+								cleanupIDs: false,
+							},
+						},
+						'sortAttrs',
+						{
+							name: 'addAttributesToSVGElement',
+							params: {
+								attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }],
+							},
+						},
+					],
+				},
+				png: {
+					// 无损压缩
+					quality: 100,
+				},
+				jpeg: {
+					quality: 90,
+				},
+				jpg: {
+					quality: 90,
+				},
+				webp: {
+					lossless: true,
+					quality: 100,
+				},
+				cache: false, // 禁用缓存
+			}),
+			// Brotli 压缩
+			compression({
+				algorithm: 'brotliCompress',
+				ext: '.br',
+				threshold: 10240, // 10kb以上的文件进行压缩
+				deleteOriginFile: false,
+			}),
 			AutoImport({
 				// 定义自动导入的模块
 				imports: ['vue', 'vue-router', 'pinia'],
