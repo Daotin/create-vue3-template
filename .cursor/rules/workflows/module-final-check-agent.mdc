@@ -1,0 +1,155 @@
+---
+description: "模块开发完成后的全面检查清单，确保功能完整、性能稳定和用户体验一致"
+globs: 
+alwaysApply: false
+priority: 1
+---
+
+# 模块开发完成后的检查清单
+
+## 适用场景
+
+- 业务模块功能开发完成后、提交测试前
+- 代码合并前的自检过程
+- 发现问题后的全面排查
+- 性能优化和用户体验改进
+
+## 关键检查点
+
+- 边界情况处理（数据为空、超长、数量超多）
+- 交互体验与兼容性（响应式、不同操作顺序）
+- 权限控制和多角色测试
+- 异常场景与容错处理
+- 性能与加载状态管理
+
+## 详细检查清单
+
+### 1. 数据展示与边界情况
+
+- 数据为空时显示适当占位符
+- 处理数据量超大的情况（分页、虚拟滚动）
+- 文字超长使用`Overflow`组件处理
+- 数字超长时的展示限制
+- 输入框添加`maxlength`限制
+- 支持最小分辨率`1280×768`
+- Echarts图表添加空数据状态
+- 检查国际化翻译完整性
+  - 语言切换时使用计算属性处理列表渲染
+  - 需要时在语言切换后重新加载接口数据
+
+### 2. 表单与交互
+
+- 表单重置功能正确性
+- 标签页切换时的状态维护
+  - 关闭弹窗时调用`search.resetSearch()`
+- 所有接口调用处添加loading状态
+  - 页面初始化loading
+  - 操作按钮loading（保存、搜索、删除等）
+- 数据增删改后的页面定位
+  - 新增、重置搜索条件：定位到第1页
+  - 编辑、删除：保留搜索条件，定位到当前页
+- 表格显示优化
+  - 使用`:show-overflow-tooltip="tableConfig.isSingleLine"`
+  - 链接使用`<div :class="{'table-cell-link':tableConfig.isSingleLine}">`
+
+### 3. 异常处理与状态管理
+
+- 接口异常时的降级措施（默认值或try..catch）
+- 正确处理多状态：初始化、加载中、失败、无数据
+- 弹框状态管理
+  - 关闭再打开，确保数据已清空
+  - 编辑后再新增，确保数据已清空（使用`@closed='handleClosed'`）
+
+### 4. 权限与多场景测试
+
+- 功能权限检查（v-auth和条件渲染）
+  - 不同权限角色下的页面元素可见性
+  - 表单和列表根据角色显示不同字段
+- 使用不同角色账户登录测试
+- 考虑非标准操作场景
+  - 不按顺序操作
+  - 快速操作与弱网环境
+  - 频繁切换页面和菜单
+  - 页面刷新后store数据恢复
+  - 多窗口/多标签页同时操作
+
+### 5. 整体质量评估
+
+- 与原型设计进行对比，检查遗漏功能
+- 整体一致性和影响范围评估
+- 稳定性、兼容性、性能与可扩展性
+
+## 示例
+
+<example>
+// 1. 边界情况处理示例
+
+// ✅ 数据为空的处理
+<template>
+  <div class="chart-container">
+    <v-chart :option="chartOption" v-if="hasData" />
+    <empty-placeholder v-else />
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+
+const hasData = computed(() => data.value && data.value.length > 0)
+const chartOption = computed(() => {
+  // 图表配置
+})
+</script>
+
+// ✅ 接口异常处理
+const fetchData = async () => {
+  try {
+    loading.value = true
+    const res = await apiGetUserList(params.value)
+    dataList.value = res?.list || []
+    total.value = res?.total || 0
+  } catch (error) {
+    console.error(error)
+    // 降级处理
+    dataList.value = []
+    total.value = 0
+    // 显示错误提示
+    ElMessage.error(t('common.fetchFailed'))
+  } finally {
+    loading.value = false
+  }
+}
+
+// ✅ 弹框状态管理
+const handleClosed = () => {
+  formRef.value?.resetFields()
+  form.value = { ...defaultForm }
+}
+</example>
+
+<example type="invalid">
+// ❌ 未处理边界情况
+<template>
+  <div class="chart-container">
+    <v-chart :option="chartOption" />
+  </div>
+</template>
+
+// ❌ 未添加loading状态
+const fetchData = async () => {
+  const res = await apiGetUserList(params.value)
+  dataList.value = res.list
+  total.value = res.total
+}
+
+// ❌ 未处理接口异常
+onMounted(() => {
+  apiGetUserList().then(res => {
+    // 直接使用结果，没有做异常处理
+    tableData.value = res.list
+  })
+})
+
+// ❌ 未考虑多角色权限
+<el-button @click="handleDelete">删除</el-button>
+</example> 

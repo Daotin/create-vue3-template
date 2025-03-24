@@ -1,0 +1,74 @@
+---
+globs: ["src/apis/**/*.ts"]
+description: "API模块编码规范，定义了API接口的组织方式、命名规则和实现标准"
+alwaysApply: false
+priority: 1
+---
+
+# API模块编码规范
+
+## 适用场景
+
+- 创建新的API模块文件时
+- 修改现有API接口实现时
+- 检查API代码是否符合团队规范时
+
+## 关键规则
+
+- 所有API接口定义应放在`src/apis/modules`目录下
+- 函数名应以`api`开头，使用camelCase命名法
+- 使用TypeScript类型定义参数和返回值
+- 使用`request`工具函数发起请求，不直接使用axios
+
+本规范定义了项目中API接口的组织方式、命名规则和实现标准，确保API代码的一致性和可维护性。
+
+## 文件结构
+
+- 按功能模块进行分类，每个功能模块一个独立文件
+- 在`src/apis/index.ts`中统一导出所有模块
+
+## 命名规范
+
+- 文件名使用小写字母，采用kebab-case命名法
+- 函数名应以`api`开头，并直观反映API的用途，如`apiGetUserInfo`、`apiUpdatePassword`等
+
+## 代码规范
+
+- 从`@/models`中导入接口类型定义
+- 请求方法使用`.get<T>`、`.post<T>`等泛型方法指定返回类型
+
+## 示例代码
+
+```typescript
+import request from '@/utils/request'
+import type { ILoginParams, ILoginResponse } from '@/models/common'
+
+// 登录接口
+export const apiLogin = (data: ILoginParams) => request.post<ILoginResponse>('/sys/login', data)
+
+// 登出接口
+export const apiLogout = () => request.post('/sys/logout')
+```
+
+## API函数实现要求
+
+1. 每个函数前添加简短注释，说明接口用途
+2. 使用箭头函数定义API请求函数
+3. 完整定义参数类型和返回值类型
+4. 清晰指定HTTP方法(get/post/put/delete等)
+5. URL路径应与后端API保持一致
+6. 请求参数应根据后端接口规范传递
+
+## 模块导出方式
+
+在`src/apis/index.ts`中统一使用命名空间方式导出：
+
+```typescript
+import * as module1 from './modules/module1'
+import * as module2 from './modules/module2'
+
+export default {
+	module1,
+	module2,
+}
+``` 
