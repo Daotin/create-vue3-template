@@ -32,3 +32,10 @@ components.d.ts
 # cache
 .stylelintcache
 .eslintcache
+
+# Private individual user cursor rules
+.cursor/rules/_*.mdc
+
+# Documentation and templates
+xnotes/
+docs/
